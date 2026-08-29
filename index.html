@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="33-auditada">
+<meta name="application-version" content="36-ajustes-github">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2200,6 +2200,31 @@ button:disabled{cursor:not-allowed}
 .simulation-result-list{display:grid;gap:7px}.simulation-result{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start;padding:8px 9px;border-radius:11px;border:1px solid var(--line)}.simulation-result.ok{background:#edf7f3}.simulation-result.fail{background:#fff4e5}.simulation-result i{font-style:normal;width:22px;height:22px;border-radius:8px;display:grid;place-items:center;font-weight:900}.simulation-result.ok i{background:#3f8467;color:#fff}.simulation-result.fail i{background:#c88b2f;color:#fff}.simulation-result b{display:block;font-size:9px}.simulation-result span{display:block;font-size:8px;color:#6c6467;margin-top:2px;line-height:1.4}
 @media(max-width:700px){.storage-explain{grid-template-columns:1fr}.simulation-facts{grid-template-columns:1fr}.simulation-active-banner,.simulation-evaluation{align-items:flex-start;flex-direction:column}.simulation-evaluation .btn{width:100%}}
 
+
+/* V36 · Ajustes posteriores a despliegue GitHub */
+@media(min-width:1100px){
+  .app,.top-inner{width:min(1640px,calc(100% - 40px))}
+  .module-content{max-width:1180px}
+  #screen-home .home-grid{grid-template-columns:minmax(0,1.82fr) minmax(360px,.72fr)}
+  .primary-home-card{min-height:205px}
+  .primary-home-card p{line-height:1.52;margin-bottom:10px}
+  .quick-tool{min-height:64px}
+}
+body{padding-bottom:calc(var(--nav) + 20px + env(safe-area-inset-bottom))}
+.screen{padding-bottom:20px}
+@media(max-width:620px){body{padding-bottom:calc(var(--nav) + 16px + env(safe-area-inset-bottom))}.screen{padding-bottom:16px}}
+.module-path:before{display:none!important}
+.legal-sheet{scroll-padding-top:86px}
+.legal-offline-card.legal-focus{box-shadow:0 0 0 3px rgba(125,23,53,.13),0 9px 24px rgba(74,39,50,.09);border-color:#c49aa8;transition:box-shadow .2s,border-color .2s}
+.vf-actions button{min-width:34px;transition:background .16s,border-color .16s,color .16s,box-shadow .16s,transform .16s}
+.vf-actions button:hover{border-color:#9e7b87}
+.vf-actions button.selected{background:var(--azul);border-color:var(--azul);color:#fff;box-shadow:0 0 0 3px rgba(34,97,129,.12);transform:translateY(-1px)}
+.vf-row.correct .vf-actions button.selected{background:var(--verde);border-color:var(--verde);color:#fff}
+.vf-row.wrong .vf-actions button.selected{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.vf-row.correct,.vf-row.wrong{transition:background .18s,border-color .18s}
+.activity-actions{flex-wrap:wrap}
+@media(max-width:620px){.vf-row{grid-template-columns:1fr}.vf-actions{justify-content:flex-end}.vf-check-actions{display:grid;grid-template-columns:1fr 1fr}.vf-check-actions .btn{width:100%}}
+
 </style>
 </head>
 <body>
@@ -3145,7 +3170,7 @@ const MODULES={
   <div class="relation-target" data-zone="ries"><b>RIESGO ACTIVO</b></div>
   <div class="relation-target" data-zone="resp"><b>RESPUESTA EN CURSO</b></div>
  </div>
-</div><div class="activity-actions"><button class="btn blue sm" id="checkM4Relation">Comprobar</button></div><div class="activity-score" id="score-m4relation"></div></div>`,
+</div><div class="activity-actions"><button class="btn secondary sm" type="button" id="resetM4Relation">↻ Reiniciar actividad</button><button class="btn blue sm" id="checkM4Relation">Comprobar</button></div><div class="activity-score" id="score-m4relation"></div></div>`,
 
 5:`<div class="module-banner"><span class="module-label">Módulo 5 · Necesidades</span><h1>Priorizar la atención</h1><p>Transformar daños en decisiones operativas.</p></div>
 <div class="priority-grid"><div class="prio p1"><b>PRIORIDAD 1</b><h4>Vida y seguridad</h4><p>Rescate, evacuación, atención médica urgente, riesgos activos y agua segura.</p></div><div class="prio p2"><b>PRIORIDAD 2</b><h4>Estabilización</h4><p>Alojamiento, alimentos, saneamiento, accesos y continuidad de servicios.</p></div><div class="prio p3"><b>PRIORIDAD 3</b><h4>Recuperación inicial</h4><p>Limpieza, rehabilitación, dictámenes y restablecimiento progresivo.</p></div></div>
@@ -3178,13 +3203,13 @@ const MODULES={
 <figure class="module-visual visual-report-compare" data-visual="m6_quality"><img src="assets/m6_quality.jpg" width="1440" height="810" loading="lazy" decoding="async" alt="Infografía Un reporte útil permite decidir: comparación entre reporte deficiente y reporte adecuado."></figure>
 <div class="lesson interactive"><h3>Actividad · Verdadero o falso</h3>
 <div class="vf-grid" id="vfReport">
- <div class="vf-row" data-answer="false"><p>Si todavía no sabemos cuántas personas están aisladas, podemos registrar “0”.</p><div class="vf-actions"><button type="button" data-v="true">V</button><button type="button" data-v="false">F</button></div></div>
- <div class="vf-row" data-answer="true"><p>Una cifra estimada debe identificarse como estimada y conservar su fuente.</p><div class="vf-actions"><button type="button" data-v="true">V</button><button type="button" data-v="false">F</button></div></div>
- <div class="vf-row" data-answer="true"><p>La hora de corte permite saber a qué momento corresponde la situación reportada.</p><div class="vf-actions"><button type="button" data-v="true">V</button><button type="button" data-v="false">F</button></div></div>
- <div class="vf-row" data-answer="false"><p>El siguiente corte debe repetir el anterior aunque no destaque qué cambió.</p><div class="vf-actions"><button type="button" data-v="true">V</button><button type="button" data-v="false">F</button></div></div>
- <div class="vf-row" data-answer="true"><p>Si dos brigadas reportan cifras distintas sobre la misma localidad, la discrepancia debe identificarse y verificarse antes de consolidar.</p><div class="vf-actions"><button type="button" data-v="true">V</button><button type="button" data-v="false">F</button></div></div>
- <div class="vf-row" data-answer="false"><p>Una fotografía por sí sola sustituye la descripción del daño, su ubicación y la hora de observación.</p><div class="vf-actions"><button type="button" data-v="true">V</button><button type="button" data-v="false">F</button></div></div>
-</div><div class="activity-score" id="score-vf"></div></div>
+ <div class="vf-row" data-answer="false"><p>Si todavía no sabemos cuántas personas están aisladas, podemos registrar “0”.</p><div class="vf-actions"><button type="button" data-v="true" aria-pressed="false">V</button><button type="button" data-v="false" aria-pressed="false">F</button></div></div>
+ <div class="vf-row" data-answer="true"><p>Una cifra estimada debe identificarse como estimada y conservar su fuente.</p><div class="vf-actions"><button type="button" data-v="true" aria-pressed="false">V</button><button type="button" data-v="false" aria-pressed="false">F</button></div></div>
+ <div class="vf-row" data-answer="true"><p>La hora de corte permite saber a qué momento corresponde la situación reportada.</p><div class="vf-actions"><button type="button" data-v="true" aria-pressed="false">V</button><button type="button" data-v="false" aria-pressed="false">F</button></div></div>
+ <div class="vf-row" data-answer="false"><p>El siguiente corte debe repetir el anterior aunque no destaque qué cambió.</p><div class="vf-actions"><button type="button" data-v="true" aria-pressed="false">V</button><button type="button" data-v="false" aria-pressed="false">F</button></div></div>
+ <div class="vf-row" data-answer="true"><p>Si dos brigadas reportan cifras distintas sobre la misma localidad, la discrepancia debe identificarse y verificarse antes de consolidar.</p><div class="vf-actions"><button type="button" data-v="true" aria-pressed="false">V</button><button type="button" data-v="false" aria-pressed="false">F</button></div></div>
+ <div class="vf-row" data-answer="false"><p>Una fotografía por sí sola sustituye la descripción del daño, su ubicación y la hora de observación.</p><div class="vf-actions"><button type="button" data-v="true" aria-pressed="false">V</button><button type="button" data-v="false" aria-pressed="false">F</button></div></div>
+</div><div class="activity-actions vf-check-actions"><button class="btn secondary sm" type="button" id="resetVF">↻ Reiniciar actividad</button><button class="btn blue sm" type="button" id="checkVF">Comprobar</button></div><div class="activity-score" id="score-vf"></div></div>
 <figure class="module-visual visual-module-capstone" data-visual="m6_glance"><img src="assets/m6_glance.jpg" width="1440" height="810" loading="lazy" decoding="async" alt="Infografía Cómo leer un EDAN de un vistazo: ubicación, población, daños, riesgos, necesidades, acciones y pendientes."></figure>`
 };
 
@@ -3425,6 +3450,7 @@ function bindModuleInteractions(n){
    setSelected(null);clearFeedback(document.getElementById("score-m4relation"));
    if(!guideState.completed[n]){guideState.interactions[activityKey(n)]=false;saveJSON(APP_KEY,guideState);updateModuleGate(n)}
  };
+ const resetM4Visible=document.getElementById("resetM4Relation");if(resetM4Visible)resetM4Visible.addEventListener("click",resetM4);
  const m4Btn=document.getElementById("checkM4Relation");if(m4Btn)m4Btn.addEventListener("click",()=>{
    const items=[...document.querySelectorAll("#moduleContent .relation-item[data-answer]")];let score=0;
    document.querySelectorAll(".relation-target").forEach(z=>z.classList.remove("good","bad"));
@@ -3434,7 +3460,7 @@ function bindModuleInteractions(n){
      if(c.length)z.classList.add(c.every(it=>it.dataset.answer===z.dataset.zone)?"good":"bad");
    });
    const ok=score===items.length;
-   showFeedback(document.getElementById("score-m4relation"),ok,ok?"Relación correcta. Organizar la observación por sector facilita consolidar el EDAN.":`${score} de ${items.length} correctas. Revisa a qué sector corresponde cada observación.`,resetM4);
+   showFeedback(document.getElementById("score-m4relation"),ok,ok?`${score} de ${items.length} relaciones correctas. Organizar la observación por sector facilita consolidar el EDAN.`:`${score} de ${items.length} correctas. Revisa a qué sector corresponde cada observación.`,resetM4);
    setActivityResult(n,ok)
  });
 
@@ -3459,20 +3485,28 @@ function bindModuleInteractions(n){
 
  // M6 · Verdadero / falso
  const resetVF=()=>{
-   document.querySelectorAll("#vfReport .vf-row").forEach(row=>{row.classList.remove("correct","wrong");delete row.dataset.done});
+   document.querySelectorAll("#vfReport .vf-row").forEach(row=>{
+     row.classList.remove("correct","wrong");delete row.dataset.selected;
+     row.querySelectorAll("[data-v]").forEach(btn=>{btn.classList.remove("selected");btn.setAttribute("aria-pressed","false")});
+   });
    clearFeedback(document.getElementById("score-vf"));
    if(!guideState.completed[n]){guideState.interactions[activityKey(n)]=false;saveJSON(APP_KEY,guideState);updateModuleGate(n)}
  };
  document.querySelectorAll("#vfReport .vf-row").forEach(row=>row.querySelectorAll("[data-v]").forEach(btn=>btn.addEventListener("click",()=>{
-   row.classList.remove("correct","wrong");const ok=btn.dataset.v===row.dataset.answer;row.classList.add(ok?"correct":"wrong");row.dataset.done=ok?"1":"0";
-   const rows=[...document.querySelectorAll("#vfReport .vf-row")];
-   if(rows.every(x=>x.dataset.done!==undefined)){
-     const score=rows.filter(x=>x.dataset.done==="1").length;
-     const perfect=score===rows.length;
-     showFeedback(document.getElementById("score-vf"),perfect,`${score} de ${rows.length} correctas. Un reporte EDAN debe distinguir dato confirmado, estimado y desconocido, conservar su hora de corte y destacar cambios.`,resetVF);
-     setActivityResult(n,perfect)
-   }
+   row.dataset.selected=btn.dataset.v;row.classList.remove("correct","wrong");
+   row.querySelectorAll("[data-v]").forEach(other=>{const selected=other===btn;other.classList.toggle("selected",selected);other.setAttribute("aria-pressed",selected?"true":"false")});
+   clearFeedback(document.getElementById("score-vf"));
+   if(!guideState.completed[n]){guideState.interactions[activityKey(n)]=false;saveJSON(APP_KEY,guideState);updateModuleGate(n)}
  })));
+ const resetVFBtn=document.getElementById("resetVF");if(resetVFBtn)resetVFBtn.addEventListener("click",resetVF);
+ const checkVFBtn=document.getElementById("checkVF");if(checkVFBtn)checkVFBtn.addEventListener("click",()=>{
+   const rows=[...document.querySelectorAll("#vfReport .vf-row")],unanswered=rows.filter(row=>row.dataset.selected===undefined).length;
+   if(unanswered){toast(`Selecciona V o F en las ${unanswered} afirmaciones pendientes.`);return}
+   let score=0;rows.forEach(row=>{const ok=row.dataset.selected===row.dataset.answer;if(ok)score++;row.classList.toggle("correct",ok);row.classList.toggle("wrong",!ok)});
+   const perfect=score===rows.length;
+   showFeedback(document.getElementById("score-vf"),perfect,perfect?`${score} de ${rows.length} correctas. Excelente: distingues dato confirmado, estimado y desconocido, hora de corte, cambios y trazabilidad.`:`${score} de ${rows.length} correctas. Las filas en rojo necesitan revisión; tu selección V/F permanece marcada para identificar qué elegiste.`,resetVF);
+   setActivityResult(n,perfect)
+ });
 
  const c=document.querySelector("[data-complete]");
  c.addEventListener("click",()=>completeModule(n,true));
@@ -4383,11 +4417,14 @@ async function sharePDF(rec=edan){
 
 document.getElementById("legalBtn")?.addEventListener("click",()=>openModal("legalModal"));
 document.querySelectorAll("[data-legal-target]").forEach(btn=>btn.addEventListener("click",()=>{
- const target=document.getElementById(btn.dataset.legalTarget);
- const sheet=btn.closest(".sheet");
+ const target=document.getElementById(btn.dataset.legalTarget),sheet=btn.closest(".sheet");
  if(target&&sheet){
-  const sticky=sheet.querySelector(".sheet-head");
-  sheet.scrollTo({top:Math.max(0,target.offsetTop-(sticky?.offsetHeight||0)-10),behavior:"smooth"});
+  const sticky=sheet.querySelector(".sheet-head"),stickyHeight=sticky?.getBoundingClientRect().height||0;
+  const sheetRect=sheet.getBoundingClientRect(),targetRect=target.getBoundingClientRect();
+  const exactTop=sheet.scrollTop+(targetRect.top-sheetRect.top)-stickyHeight-12;
+  sheet.scrollTo({top:Math.max(0,exactTop),behavior:"smooth"});
+  document.querySelectorAll(".legal-offline-card.legal-focus").forEach(x=>x.classList.remove("legal-focus"));
+  target.classList.add("legal-focus");window.setTimeout(()=>target.classList.remove("legal-focus"),1300);
  }
 }));
 function openModal(id){document.getElementById(id).classList.add("open");document.body.style.overflow="hidden"}function closeModal(id){document.getElementById(id).classList.remove("open");document.body.style.overflow=""}

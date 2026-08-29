@@ -31,3 +31,11 @@ V34 añade:
 - intento de precache de jsPDF y QRCode durante instalación PWA sin bloquear la instalación si el CDN no está disponible.
 
 V35: ayuda contextual en 7 pasos, simulación integral NO OFICIAL, evaluación automática de 10 criterios y lenguaje simplificado de respaldo/restauración.
+
+V36 · Ajustes validados desde GitHub Pages:
+- índice legal con desplazamiento exacto;
+- mayor ancho útil en PC;
+- reducción de scroll vacío inferior;
+- línea decorativa de módulos eliminada;
+- M4 con reinicio visible;
+- V/F con selección visible, Comprobar y Reiniciar separados.
