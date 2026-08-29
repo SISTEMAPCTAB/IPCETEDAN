@@ -1,0 +1,33 @@
+GUÍA DIGITAL EDAN TABASCO · V35 APRENDIZAJE GUIADO
+
+Incluye:
+- PWA instalable (HTTPS/GitHub Pages)
+- Caché offline del HTML, imágenes, iconos y manifest
+- Múltiples expedientes y borradores
+- Papelera con restauración
+- Historial de hasta 20 revisiones y restauración
+- Perfil local reutilizable
+- Exportación/importación individual con anexos
+- Respaldo general y restauración de expedientes, borradores, historial, papelera, perfil y anexos
+- Control de IDs duplicados: COPIA / SUSTITUIR / CANCELAR
+- PDF, QR, SHA-256, autoguardado y almacenamiento persistente
+
+NOTA PDF/QR:
+Las bibliotecas jsPDF y QRCode siguen referenciadas a CDN en esta compilación y quedan disponibles offline después de su primera carga exitosa si el Service Worker ya está activo. Para una instalación institucional totalmente independiente de terceros, deben alojarse también localmente dentro de assets/vendor/.
+
+La PWA requiere HTTPS o localhost; no se activa desde file://.
+
+
+V33: los anexos retirados no se borran físicamente mientras puedan ser requeridos por historial/recuperación; Papelera se escribe antes de retirar originales; COMBINAR conserva colisiones como copias independientes; REEMPLAZAR genera primero un respaldo general de seguridad.
+
+V34 añade:
+- autodiagnóstico de localStorage e IndexedDB;
+- eliminación de anexos no destructiva durante edición;
+- purga física solo si el anexo no está referenciado por expediente, borrador, historial o papelera;
+- Papelera escrita y verificada antes de retirar originales;
+- restauración que conserva la copia de Papelera si ocurre un error;
+- combinación de respaldos sin descartar IDs coincidentes: se generan copias independientes;
+- respaldo general automático antes de usar REEMPLAZAR;
+- intento de precache de jsPDF y QRCode durante instalación PWA sin bloquear la instalación si el CDN no está disponible.
+
+V35: ayuda contextual en 7 pasos, simulación integral NO OFICIAL, evaluación automática de 10 criterios y lenguaje simplificado de respaldo/restauración.
