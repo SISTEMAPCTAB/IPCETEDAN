@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="37-responsive-final">
+<meta name="application-version" content="38-icono-pwa">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="EDAN Tabasco">
-<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <title>Guía Digital EDAN · IPCET Tabasco</title>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" data-optional-lib="jspdf"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" data-optional-lib="qrcode"></script>
@@ -2405,6 +2407,67 @@ textarea{width:100%}
   .bottom-nav{width:calc(100% - 10px)}
 }
 
+
+/* V38 · Ventajas de Inicio equilibradas + soporte de icono PWA */
+#screen-home .hero-copy{min-width:0}
+#screen-home .hero-benefits{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+  max-width:650px;
+  margin-top:14px;
+}
+#screen-home .hero-benefits span{
+  width:100%;
+  min-width:0;
+  min-height:46px;
+  padding:8px 11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border-radius:999px;
+  text-align:center;
+  line-height:1.2;
+  white-space:normal;
+}
+#screen-home .hero-benefits span i{
+  flex:0 0 22px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-style:normal;
+  font-weight:950;
+  font-size:12px;
+}
+#screen-home .hero-benefits span b{
+  min-width:0;
+  font-size:10.5px;
+  font-weight:850;
+  color:rgba(255,255,255,.96);
+}
+@media(max-width:620px){
+  #screen-home .hero-benefits{
+    grid-template-columns:1fr;
+    gap:7px;
+    max-width:none;
+  }
+  #screen-home .hero-benefits span{
+    min-height:40px;
+    justify-content:flex-start;
+    padding:7px 10px;
+    border-radius:13px;
+    text-align:left;
+  }
+  #screen-home .hero-benefits span i{flex-basis:20px;width:20px;height:20px;font-size:11px}
+  #screen-home .hero-benefits span b{font-size:10px}
+}
+
 </style>
 </head>
 <body>
@@ -2431,10 +2494,10 @@ textarea{width:100%}
     <span class="kicker">🛡️ CAPACITACIÓN Y LEVANTAMIENTO DIGITAL</span>
     <h1>Capacítate o realiza un EDAN</h1>
     <p>Elige la ruta que necesitas: aprender el método mediante módulos breves o iniciar directamente un levantamiento digital con evidencias y reporte.</p>
-    <div class="hero-benefits">
-     <span>✓ Capacitación breve</span>
-     <span>✓ Guardado local</span>
-     <span>✓ Uso en teléfono y PC</span>
+    <div class="hero-benefits" aria-label="Ventajas principales">
+     <span><i aria-hidden="true">✓</i><b>Capacitación breve</b></span>
+     <span><i aria-hidden="true">✓</i><b>Guardado local</b></span>
+     <span><i aria-hidden="true">✓</i><b>Uso en teléfono y PC</b></span>
     </div>
    </div>
    <div class="hero-actions-panel">

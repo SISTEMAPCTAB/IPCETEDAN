@@ -47,3 +47,8 @@ V37 · Normalización responsive integral:
 - formularios y grids normalizados para no desbordar ni alargarse;
 - tamaños de fuente de campos en móvil >=16px para evitar zoom de iOS;
 - tarjetas, navegación y actividades compactadas y con wrap seguro.
+
+V38 · Icono PWA e Inicio:
+- icono EDAN suministrado por el usuario integrado para Android/PWA, iPhone/iPad y acceso directo de escritorio;
+- variantes 192, 512, Apple Touch 180, favicon 32 y maskable;
+- ventajas de Inicio distribuidas en tres columnas iguales en PC/tablet y apiladas de forma compacta en móvil.
