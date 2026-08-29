@@ -1,4 +1,4 @@
-GUÍA DIGITAL EDAN TABASCO · V35 APRENDIZAJE GUIADO
+GUÍA DIGITAL EDAN TABASCO · V37 RESPONSIVE FINAL
 
 Incluye:
 - PWA instalable (HTTPS/GitHub Pages)
@@ -39,3 +39,11 @@ V36 · Ajustes validados desde GitHub Pages:
 - línea decorativa de módulos eliminada;
 - M4 con reinicio visible;
 - V/F con selección visible, Comprobar y Reiniciar separados.
+
+V37 · Normalización responsive integral:
+- módulo de contenido ocupa consistentemente el ancho útil en PC/tablet;
+- infografías alineadas al ancho del apartado, sin desplazamientos laterales artificiales;
+- corrección del bloque Actividad obligatoria en móvil (el flex-basis de 360px ya no se convierte en altura);
+- formularios y grids normalizados para no desbordar ni alargarse;
+- tamaños de fuente de campos en móvil >=16px para evitar zoom de iOS;
+- tarjetas, navegación y actividades compactadas y con wrap seguro.

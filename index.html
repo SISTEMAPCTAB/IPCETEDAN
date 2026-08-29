@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="36-ajustes-github">
+<meta name="application-version" content="37-responsive-final">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2224,6 +2224,186 @@ body{padding-bottom:calc(var(--nav) + 20px + env(safe-area-inset-bottom))}
 .vf-row.correct,.vf-row.wrong{transition:background .18s,border-color .18s}
 .activity-actions{flex-wrap:wrap}
 @media(max-width:620px){.vf-row{grid-template-columns:1fr}.vf-actions{justify-content:flex-end}.vf-check-actions{display:grid;grid-template-columns:1fr 1fr}.vf-check-actions .btn{width:100%}}
+
+
+/* =========================================================
+   V37 · Normalización responsive integral PC / tablet / móvil
+   ========================================================= */
+html,body{max-width:100%;overflow-x:hidden;scroll-padding-bottom:96px}
+.app,.top-inner,.module-content,.wizard-main,.lesson,.interactive,.complete-box,.module-nav,
+.module-visual,.simulation-shell,.saved-item,.storage-dashboard,.storage-explain{min-width:0}
+
+/* PC: usar de forma consistente el área disponible y alinear todos los apartados */
+@media(min-width:1100px){
+  .app,.top-inner{width:min(1760px,calc(100% - 28px))}
+  .module-content{width:100%;max-width:none;margin-left:0;margin-right:0}
+  #screen-module .module-content{width:100%}
+  .lesson,.interactive,.module-banner,.complete-box,.module-nav{width:100%;max-width:none}
+  .module-visual,
+  .module-visual.visual-hero,
+  .module-visual.visual-ribbon,
+  .module-visual.visual-stage,
+  .module-visual.visual-edge,
+  .module-visual.visual-aside-right,
+  .module-visual.visual-framed,
+  .module-visual.visual-case,
+  .module-visual.visual-report-flow,
+  .module-visual.visual-report-compare,
+  .module-visual.visual-module-capstone,
+  .module-visual.visual-form-intro,
+  .module-visual.visual-evidence-guide,
+  .module-visual.visual-close-check{
+    width:100%;
+    margin-left:0;
+    margin-right:0;
+  }
+  .module-grid{gap:16px}
+  .lesson p,.lesson li,.info-box span,.interactive p{max-width:none}
+}
+
+/* Tablet: evitar columnas estrechas y alturas artificiales */
+@media(min-width:701px) and (max-width:1099px){
+  .app,.top-inner{width:calc(100% - 20px)}
+  .module-content{width:100%;max-width:none}
+  .module-visual,
+  .module-visual.visual-ribbon,
+  .module-visual.visual-stage,
+  .module-visual.visual-aside-right,
+  .module-visual.visual-framed,
+  .module-visual.visual-case,
+  .module-visual.visual-report-flow,
+  .module-visual.visual-report-compare,
+  .module-visual.visual-module-capstone,
+  .module-visual.visual-form-intro,
+  .module-visual.visual-evidence-guide,
+  .module-visual.visual-close-check{width:100%;margin-left:0;margin-right:0}
+  .module-gate{flex-basis:auto}
+}
+
+/* Todas las cajas deben poder encoger sin forzar desbordamientos */
+.field,.form-grid>* ,.service-grid>* ,.need-row>* ,.module-footer>* ,.module-top>* ,
+.relation-board>* ,.relation-target,.relation-source,.match-row>* ,.sequence-item>* ,
+.vf-row>* ,.classify-item>* ,.home-grid>* ,.primary-actions>* ,.quick-tools>*{min-width:0}
+input,select,textarea,button{max-width:100%}
+textarea{width:100%}
+
+/* Teléfonos: diseño compacto, sin textos encimados ni bloques alargados */
+@media(max-width:700px){
+  .app{width:calc(100% - 12px)}
+  .screen{padding-left:0;padding-right:0}
+  .module-content{width:100%;max-width:none;margin:0}
+  .module-banner,.lesson,.interactive,.complete-box,.module-nav{width:100%;max-width:100%}
+  .module-banner{border-radius:18px}
+  .lesson,.interactive{padding:14px;border-radius:16px}
+  .lesson h3{font-size:16px;line-height:1.25}
+  .lesson p{font-size:12px;line-height:1.48;overflow-wrap:anywhere}
+  .lesson li{font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+  .info-box{padding:13px}
+  .info-box b{font-size:13px;line-height:1.25}
+  .info-box span{font-size:11px;line-height:1.42;overflow-wrap:anywhere}
+
+  /* Tarjetas del selector de módulos */
+  .module{padding:14px;border-radius:18px;min-height:0}
+  .module-top{padding-right:0!important;align-items:flex-start}
+  .module.completed .module-top{padding-right:58px!important}
+  .module h3{font-size:18px;line-height:1.22}
+  .module p{font-size:11px;line-height:1.42;margin-bottom:9px}
+  .module-learn{padding:9px 10px;margin-bottom:10px}
+  .module-learn span{font-size:10px;line-height:1.38;overflow-wrap:anywhere}
+  .module-footer{flex-wrap:wrap;align-items:center}
+  .module-activity{flex:1 1 150px;white-space:normal;line-height:1.3}
+  .module-footer .btn{flex:0 0 auto}
+
+  /* Arrastrar / relacionar: no reservar alturas excesivas */
+  .drop-zone{min-height:72px;padding:9px}
+  .relation-target{min-height:50px;padding:9px}
+  .drag-bank{padding:9px}
+  .drag-card,.relation-item{font-size:10.5px;line-height:1.35;overflow-wrap:anywhere}
+
+  /* Formularios: una sola columna cuando la pantalla ya es estrecha */
+  .form-grid,.form-grid.three-col,.service-grid{grid-template-columns:1fr!important}
+  .field.full{grid-column:auto}
+  input[type=text],input[type=number],input[type=datetime-local],input[type=date],input[type=time],select,textarea{
+    font-size:16px; /* evita zoom automático en iOS */
+    line-height:1.25;
+    min-height:44px;
+  }
+  textarea{min-height:82px}
+
+  /* Actividad obligatoria: corrige la base flexible de 360px en eje vertical */
+  .complete-box{
+    flex-direction:column;
+    align-items:stretch;
+    min-height:0!important;
+    height:auto!important;
+    gap:10px;
+    padding:12px;
+  }
+  .module-gate{
+    flex:0 0 auto!important;
+    width:100%;
+    min-height:0!important;
+  }
+  .complete-btn{
+    flex:0 0 auto!important;
+    width:100%;
+    min-height:44px;
+  }
+  .module-gate b{font-size:11px;line-height:1.3}
+  .module-gate span{font-size:10px;line-height:1.4;overflow-wrap:anywhere}
+
+  /* Navegación de módulos */
+  .module-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:start}
+  .module-nav>div{min-width:0}
+  .module-nav .btn{width:100%;min-width:0;white-space:normal;line-height:1.2;min-height:44px}
+  .module-lock-note{text-align:center;font-size:8px;line-height:1.3;margin-top:4px}
+
+  /* V/F y demás actividades */
+  .vf-row{grid-template-columns:minmax(0,1fr) auto!important;align-items:center;padding:9px}
+  .vf-row p{font-size:10.5px;line-height:1.4;overflow-wrap:anywhere}
+  .vf-actions{flex:0 0 auto;align-self:center}
+  .vf-actions button{min-width:36px;min-height:36px;padding:6px}
+  .activity-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .activity-actions .btn{width:100%;min-width:0;white-space:normal;line-height:1.2;min-height:42px}
+  .activity-score{font-size:10px;line-height:1.4}
+
+  /* Infografías: alineadas al mismo ancho del contenido */
+  .module-visual,
+  .module-visual.visual-ribbon,
+  .module-visual.visual-stage,
+  .module-visual.visual-aside-right,
+  .module-visual.visual-framed,
+  .module-visual.visual-case,
+  .module-visual.visual-report-flow,
+  .module-visual.visual-report-compare,
+  .module-visual.visual-module-capstone,
+  .module-visual.visual-form-intro,
+  .module-visual.visual-evidence-guide,
+  .module-visual.visual-close-check{width:100%;margin-left:0;margin-right:0}
+}
+
+@media(max-width:520px){
+  .need-row{grid-template-columns:1fr!important}
+  .need-row .field:first-child{grid-column:auto!important}
+  .attach-grid{grid-template-columns:1fr}
+  .learning-flow{grid-template-columns:1fr}
+  .vf-row{grid-template-columns:1fr!important}
+  .vf-actions{justify-content:flex-end;width:100%;margin-top:5px}
+  .activity-actions,.vf-check-actions{grid-template-columns:1fr!important}
+}
+
+@media(max-width:390px){
+  .app{width:calc(100% - 10px)}
+  .module{padding:13px}
+  .module-top{gap:6px}
+  .module-time{font-size:8px;padding:4px 6px}
+  .module .micon{width:38px;height:38px;font-size:19px}
+  .module-number{width:32px;height:32px}
+  .page-head{gap:8px}.page-head h1{font-size:23px}
+  .lesson,.interactive{padding:12px}
+  .module-banner{padding:17px 14px}.module-banner h1{font-size:23px}
+  .bottom-nav{width:calc(100% - 10px)}
+}
 
 </style>
 </head>
