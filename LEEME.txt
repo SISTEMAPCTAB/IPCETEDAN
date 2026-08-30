@@ -1,80 +1,16 @@
-GUÍA DIGITAL EDAN TABASCO · V37 RESPONSIVE FINAL
+GUÍA DIGITAL EDAN TABASCO · V40 OFFLINE ROBUSTO
 
-Incluye:
-- PWA instalable (HTTPS/GitHub Pages)
-- Caché offline del HTML, imágenes, iconos y manifest
-- Múltiples expedientes y borradores
-- Papelera con restauración
-- Historial de hasta 20 revisiones y restauración
-- Perfil local reutilizable
-- Exportación/importación individual con anexos
-- Respaldo general y restauración de expedientes, borradores, historial, papelera, perfil y anexos
-- Control de IDs duplicados: COPIA / SUSTITUIR / CANCELAR
-- PDF, QR, SHA-256, autoguardado y almacenamiento persistente
+Cambios principales:
+- La aplicación arranca únicamente con archivos locales.
+- Google Analytics ya no participa en la carga inicial.
+- jsPDF y QRCode se cargan después, de forma opcional, y se intentan almacenar en caché durante la instalación PWA.
+- El Service Worker tiene fallback de navegación a index.html para aperturas sin conexión.
+- Navegación, capacitación, formulario, almacenamiento, historial, papelera, imágenes, simulación e importación/exportación funcionan sin depender de Analytics.
+- PDF/QR quedan disponibles offline cuando sus bibliotecas hayan sido almacenadas en caché durante una conexión previa.
 
-NOTA PDF/QR:
-Las bibliotecas jsPDF y QRCode siguen referenciadas a CDN en esta compilación y quedan disponibles offline después de su primera carga exitosa si el Service Worker ya está activo. Para una instalación institucional totalmente independiente de terceros, deben alojarse también localmente dentro de assets/vendor/.
-
-La PWA requiere HTTPS o localhost; no se activa desde file://.
-
-
-V33: los anexos retirados no se borran físicamente mientras puedan ser requeridos por historial/recuperación; Papelera se escribe antes de retirar originales; COMBINAR conserva colisiones como copias independientes; REEMPLAZAR genera primero un respaldo general de seguridad.
-
-V34 añade:
-- autodiagnóstico de localStorage e IndexedDB;
-- eliminación de anexos no destructiva durante edición;
-- purga física solo si el anexo no está referenciado por expediente, borrador, historial o papelera;
-- Papelera escrita y verificada antes de retirar originales;
-- restauración que conserva la copia de Papelera si ocurre un error;
-- combinación de respaldos sin descartar IDs coincidentes: se generan copias independientes;
-- respaldo general automático antes de usar REEMPLAZAR;
-- intento de precache de jsPDF y QRCode durante instalación PWA sin bloquear la instalación si el CDN no está disponible.
-
-V35: ayuda contextual en 7 pasos, simulación integral NO OFICIAL, evaluación automática de 10 criterios y lenguaje simplificado de respaldo/restauración.
-
-V36 · Ajustes validados desde GitHub Pages:
-- índice legal con desplazamiento exacto;
-- mayor ancho útil en PC;
-- reducción de scroll vacío inferior;
-- línea decorativa de módulos eliminada;
-- M4 con reinicio visible;
-- V/F con selección visible, Comprobar y Reiniciar separados.
-
-V37 · Normalización responsive integral:
-- módulo de contenido ocupa consistentemente el ancho útil en PC/tablet;
-- infografías alineadas al ancho del apartado, sin desplazamientos laterales artificiales;
-- corrección del bloque Actividad obligatoria en móvil (el flex-basis de 360px ya no se convierte en altura);
-- formularios y grids normalizados para no desbordar ni alargarse;
-- tamaños de fuente de campos en móvil >=16px para evitar zoom de iOS;
-- tarjetas, navegación y actividades compactadas y con wrap seguro.
-
-V38 · Icono PWA e Inicio:
-- icono EDAN suministrado por el usuario integrado para Android/PWA, iPhone/iPad y acceso directo de escritorio;
-- variantes 192, 512, Apple Touch 180, favicon 32 y maskable;
-- ventajas de Inicio distribuidas en tres columnas iguales en PC/tablet y apiladas de forma compacta en móvil.
-
-
-V39 · GOOGLE ANALYTICS 4
-ID de medición: G-6YYVEDQMC7
-
-Eventos incorporados (sin datos personales ni contenido de expedientes):
-- pantalla_vista
-- guia_iniciada
-- modulo_completado (parámetro: modulo)
-- guia_completada
-- simulacion_iniciada
-- simulacion_completada
-- edan_iniciado
-- edan_guardado (nuevo / actualizacion)
-- edan_exportado
-- edan_importado
-- pdf_generado
-- pdf_compartido
-- qr_generado
-- respaldo_generado
-- respaldo_restaurado
-- pwa_instalada (navegadores que exponen appinstalled)
-- pwa_abierta
-- pwa_primera_apertura (útil especialmente en iOS/iPadOS)
-
-La analítica es opcional para la operación: si no hay conexión, la guía sigue funcionando y guardando localmente.
+IMPORTANTE PARA GITHUB PAGES:
+1. Sustituye TODOS los archivos por esta versión.
+2. Abre la guía una vez con internet y espera unos segundos.
+3. Cierra y vuelve a abrir la PWA.
+4. Después prueba con modo avión.
+5. Si el teléfono conserva un Service Worker anterior, elimina la PWA/atajo anterior, visita la URL actualizada y vuelve a agregarla a la pantalla de inicio.

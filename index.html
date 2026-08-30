@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="39-analytics">
+<meta name="application-version" content="40-offline-robusto">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -16,20 +16,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <title>Guía Digital EDAN · IPCET Tabasco</title>
-<!-- Google Analytics 4 · métricas generales de uso; no se envían datos del contenido EDAN -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6YYVEDQMC7"></script>
+<!-- V40: ninguna biblioteca externa participa en el arranque de la aplicación. -->
 <script>
 window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments)}
-gtag('js',new Date());
-gtag('config','G-6YYVEDQMC7',{
-  allow_google_signals:false,
-  allow_ad_personalization_signals:false
-});
+window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
 </script>
-
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" data-optional-lib="jspdf"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" data-optional-lib="qrcode"></script>
 <style>
 :root{
  --vino:#7d1735;--vino2:#a1274d;--vino3:#5f1028;--rosa:#f7edf1;
@@ -3177,11 +3168,35 @@ window.addEventListener("unhandledrejection",e=>{
  console.error("Guía EDAN · promesa no controlada",e.reason);
 });
 const ANALYTICS_MEASUREMENT_ID="G-6YYVEDQMC7";
+const ANALYTICS_SCRIPT_ID="edan-ga4-script";
+const ANALYTICS_QUEUE_KEY="edan_ga_offline_queue_v40";
+let analyticsConfigured=false;
+function configureAnalytics(){
+ if(analyticsConfigured)return;
+ analyticsConfigured=true;
+ window.gtag('js',new Date());
+ window.gtag('config',ANALYTICS_MEASUREMENT_ID,{allow_google_signals:false,allow_ad_personalization_signals:false});
+}
+function loadAnalyticsOptional(){
+ configureAnalytics();
+ if(!navigator.onLine||document.getElementById(ANALYTICS_SCRIPT_ID))return;
+ const s=document.createElement('script');s.id=ANALYTICS_SCRIPT_ID;s.async=true;
+ s.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ANALYTICS_MEASUREMENT_ID)}`;
+ s.onload=flushAnalyticsQueue;s.onerror=()=>console.warn('Analytics no disponible; la guía continúa sin conexión.');
+ document.head.appendChild(s);
+}
+function queueAnalyticsEvent(name,params){
+ try{const q=loadJSON(ANALYTICS_QUEUE_KEY,[]);q.push({name,params,at:new Date().toISOString()});saveJSON(ANALYTICS_QUEUE_KEY,q.slice(-100),false)}catch(e){}
+}
+function flushAnalyticsQueue(){
+ if(!navigator.onLine)return;
+ try{const q=loadJSON(ANALYTICS_QUEUE_KEY,[]);if(!q.length)return;q.forEach(x=>window.gtag('event',x.name,{...(x.params||{}),transport_type:'beacon'}));saveJSON(ANALYTICS_QUEUE_KEY,[],false)}catch(e){}
+}
 function trackEvent(name,params={}){
  try{
-  if(typeof window.gtag!=="function"&&typeof gtag!=="function")return;
-  const fn=typeof window.gtag==="function"?window.gtag:gtag;
-  fn("event",name,{...params,transport_type:"beacon"});
+  configureAnalytics();
+  if(!navigator.onLine){queueAnalyticsEvent(name,params);return}
+  window.gtag("event",name,{...params,transport_type:"beacon"});
  }catch(e){console.warn("Analytics",e)}
 }
 function trackOnceLocal(key,eventName,params={}){
@@ -3209,6 +3224,33 @@ function trackPWAState(){
 }
 window.addEventListener("appinstalled",()=>{trackEvent("pwa_instalada",{plataforma:"compatible"})});
 
+const OPTIONAL_LIBRARY_URLS={
+ jspdf:"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+ qrcode:"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+};
+const optionalLibraryPromises={};
+function injectOptionalScript(name,url){
+ if(optionalLibraryPromises[name])return optionalLibraryPromises[name];
+ optionalLibraryPromises[name]=new Promise((resolve,reject)=>{
+  const existing=document.querySelector(`script[data-runtime-lib="${name}"]`);
+  if(existing){existing.addEventListener('load',()=>resolve(true),{once:true});existing.addEventListener('error',()=>reject(new Error(name)),{once:true});return}
+  const s=document.createElement('script');s.async=true;s.src=url;s.dataset.runtimeLib=name;
+  s.onload=()=>resolve(true);s.onerror=()=>reject(new Error(`${name} no disponible`));document.head.appendChild(s);
+ });
+ return optionalLibraryPromises[name];
+}
+async function ensureJsPDFLibrary(){
+ if(window.jspdf?.jsPDF)return true;
+ try{await injectOptionalScript('jspdf',OPTIONAL_LIBRARY_URLS.jspdf);return !!window.jspdf?.jsPDF}catch(e){console.warn(e);return false}
+}
+async function ensureQRCodeLibrary(){
+ if(typeof window.QRCode!=="undefined")return true;
+ try{await injectOptionalScript('qrcode',OPTIONAL_LIBRARY_URLS.qrcode);return typeof window.QRCode!=="undefined"}catch(e){console.warn(e);return false}
+}
+async function warmOptionalLibraries(){
+ if(!navigator.onLine)return;
+ await Promise.allSettled([ensureJsPDFLibrary(),ensureQRCodeLibrary()]);
+}
 const APP_KEY="ipcet_edan_guide_v2";
 const DRAFT_KEY="ipcet_edan_draft_v2"; // compatibilidad: borrador abierto
 const DRAFTS_KEY="ipcet_edan_drafts_v19"; // varios borradores independientes
@@ -4501,7 +4543,7 @@ async function validationPayload(rec){
  ].filter(Boolean).join("\n");
 }
 async function makeQRDataURL(text,size=420){
- if(typeof QRCode==="undefined")throw new Error("Generador QR no disponible. La guía continúa funcionando; conecta a internet para cargar esta función y vuelve a intentar.");
+ if(!(await ensureQRCodeLibrary()))throw new Error("El generador QR todavía no está disponible en la caché de este dispositivo. Conecta una vez a internet para almacenarlo; el resto de la guía funciona sin conexión.");
  const holder=document.createElement("div");
  holder.style.position="fixed";holder.style.left="-9999px";holder.style.top="0";
  document.body.appendChild(holder);
@@ -4575,7 +4617,7 @@ async function blobToJpegDataURL(blob){
 }
 async function buildPDF(rec){
  await ensureLogoData();
- if(!window.jspdf?.jsPDF)throw new Error("Generador PDF no disponible. La guía continúa funcionando; conecta a internet para cargar esta función y vuelve a intentar.");
+ if(!(await ensureJsPDFLibrary()))throw new Error("El generador PDF todavía no está disponible en la caché de este dispositivo. Conecta una vez a internet para almacenarlo; el resto de la guía funciona sin conexión.");
  const prepared=await prepareValidation(rec);
  if(!prepared)throw new Error("Validación incompleta");
  const {validation,qrData}=prepared;
@@ -4750,11 +4792,17 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelect
  }
  hydrateForm();renderNeeds();renderWizard();renderAttachments();updateProgress();renderSaved();updateEDANVisuals();setStatus("Guardado local");
  if(navigator.storage?.persist){try{navigator.storage.persist()}catch(e){}}
- if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./service-worker.js").catch(e=>console.warn("Service Worker",e));
- window.addEventListener("offline",()=>toast("Modo sin conexión activo"));
- window.addEventListener("online",()=>toast("Conexión restablecida"));
+ if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  try{
+   await navigator.serviceWorker.register("./service-worker.js");
+   await navigator.serviceWorker.ready;
+  }catch(e){console.warn("Service Worker",e)}
+ }
+ window.addEventListener("offline",()=>toast("Modo sin conexión activo · la guía y tus datos locales siguen disponibles"));
+ window.addEventListener("online",()=>{toast("Conexión restablecida");loadAnalyticsOptional();warmOptionalLibraries();flushAnalyticsQueue()});
  updateStorageDashboard();
  trackPWAState();
+ setTimeout(()=>{loadAnalyticsOptional();warmOptionalLibraries();flushAnalyticsQueue()},50);
 })();
 </script>
 </body>
