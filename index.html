@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="38-icono-pwa">
+<meta name="application-version" content="39-analytics">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -16,6 +16,18 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <title>Guía Digital EDAN · IPCET Tabasco</title>
+<!-- Google Analytics 4 · métricas generales de uso; no se envían datos del contenido EDAN -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6YYVEDQMC7"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());
+gtag('config','G-6YYVEDQMC7',{
+  allow_google_signals:false,
+  allow_ad_personalization_signals:false
+});
+</script>
+
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" data-optional-lib="jspdf"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" data-optional-lib="qrcode"></script>
 <style>
@@ -3065,7 +3077,7 @@ textarea{width:100%}
    </div>
 
    <div class="privacy legal-disclaimer">
-    <b>Nota:</b> estos textos son extractos explicativos para capacitación y consulta operativa. No sustituyen el texto íntegro ni la interpretación jurídica de los ordenamientos vigentes. En operación real prevalecen las disposiciones oficiales, protocolos y formatos que determine la autoridad competente.
+    <b>Nota:</b> estos textos son extractos explicativos para capacitación y consulta operativa. No sustituyen el texto íntegro ni la interpretación jurídica de los ordenamientos vigentes. En operación real prevalecen las disposiciones oficiales, protocolos y formatos que determine la autoridad competente.<br><br><b>Analítica de uso:</b> esta guía registra métricas generales y anónimas de utilización mediante Google Analytics (por ejemplo, inicio y conclusión de capacitación, generación de reportes e instalación/uso de la PWA). No se envían a Analytics nombres, dependencia, contenido del EDAN, fotografías, coordenadas, identificadores de expediente ni datos del responsable.
    </div>
   </div>
  </div>
@@ -3164,6 +3176,39 @@ window.addEventListener("error",e=>{
 window.addEventListener("unhandledrejection",e=>{
  console.error("Guía EDAN · promesa no controlada",e.reason);
 });
+const ANALYTICS_MEASUREMENT_ID="G-6YYVEDQMC7";
+function trackEvent(name,params={}){
+ try{
+  if(typeof window.gtag!=="function"&&typeof gtag!=="function")return;
+  const fn=typeof window.gtag==="function"?window.gtag:gtag;
+  fn("event",name,{...params,transport_type:"beacon"});
+ }catch(e){console.warn("Analytics",e)}
+}
+function trackOnceLocal(key,eventName,params={}){
+ try{
+  const k="edan_ga_"+key;if(localStorage.getItem(k))return false;
+  localStorage.setItem(k,"1");trackEvent(eventName,params);return true;
+ }catch(e){trackEvent(eventName,params);return true}
+}
+function trackOnceSession(key,eventName,params={}){
+ try{
+  const k="edan_ga_"+key;if(sessionStorage.getItem(k))return false;
+  sessionStorage.setItem(k,"1");trackEvent(eventName,params);return true;
+ }catch(e){trackEvent(eventName,params);return true}
+}
+function analyticsScreenName(id){
+ return ({"screen-home":"inicio","screen-guide":"guia","screen-module":"modulo","screen-simulation":"simulacion","screen-edan":"edan","screen-saved":"almacenamiento"})[id]||"otra";
+}
+function isStandalonePWA(){return window.matchMedia?.("(display-mode: standalone)").matches||navigator.standalone===true}
+function trackPWAState(){
+ if(isStandalonePWA()){
+  const platform=navigator.standalone===true?"ios":"pwa";
+  trackEvent("pwa_abierta",{plataforma:platform});
+  trackOnceLocal("pwa_primera_apertura","pwa_primera_apertura",{plataforma:platform});
+ }
+}
+window.addEventListener("appinstalled",()=>{trackEvent("pwa_instalada",{plataforma:"compatible"})});
+
 const APP_KEY="ipcet_edan_guide_v2";
 const DRAFT_KEY="ipcet_edan_draft_v2"; // compatibilidad: borrador abierto
 const DRAFTS_KEY="ipcet_edan_drafts_v19"; // varios borradores independientes
@@ -3248,6 +3293,9 @@ function scrollToPageElement(el,behavior="smooth"){
  window.scrollTo({top:y,left:0,behavior});
 }
 function showScreen(id){
+ trackEvent("pantalla_vista",{pantalla:analyticsScreenName(id)});
+ if(id==="screen-guide")trackOnceSession("guia_iniciada","guia_iniciada");
+ if(id==="screen-edan"&&!edan?.simulation?.active&&!hasMeaningfulEdanData(edan))trackOnceLocal("edan_inicio_"+edan.id,"edan_iniciado",{modo:"real"});
  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
  const introVisual=document.querySelector("#screen-home .intro-visual-wrap");
  if(introVisual){
@@ -3501,13 +3549,21 @@ function updateModuleGate(n){
    nextBtn.title=passed?"Continuar al siguiente módulo":"Resuelve correctamente la actividad para continuar";
  }
 }
+function trackModuleCompletion(n,wasCompleted){
+ if(wasCompleted)return;
+ trackEvent("modulo_completado",{modulo:Number(n)});
+ const done=Object.values(guideState.completed||{}).filter(Boolean).length;
+ if(done===6)trackOnceLocal("guia_completada","guia_completada",{modulos:6});
+}
 function completeModule(n,showMessage=true){
+ const wasCompleted=!!guideState.completed[n];
  if(!isModulePassed(n)){
    if(showMessage)toast("Primero debes resolver correctamente la actividad.");
    updateModuleGate(n);
    return false;
  }
  guideState.completed[n]=true;
+ trackModuleCompletion(n,wasCompleted);
  saveJSON(APP_KEY,guideState);
  updateProgress();
  updateModuleGate(n);
@@ -3520,9 +3576,11 @@ function completeModule(n,showMessage=true){
  return true;
 }
 function setActivityResult(n,ok){
+ const wasCompleted=!!guideState.completed[n];
  guideState.interactions[activityKey(n)]=!!ok;
  if(ok){
    guideState.completed[n]=true;
+   trackModuleCompletion(n,wasCompleted);
  }
  saveJSON(APP_KEY,guideState);
  updateProgress();
@@ -3962,6 +4020,7 @@ function upsertRecord(){
  const ok=saveRecords(records);
  if(ok){
   removeDraft(copy.id);saveJSON(DRAFT_KEY,copy);
+  if(!copy.simulation?.active)trackEvent("edan_guardado",{tipo:i>=0?"actualizacion":"nuevo"});
   toast(i>=0?"Expediente actualizado; versión anterior resguardada.":"EDAN guardado como nuevo expediente.");
  }
  return ok;
@@ -4014,6 +4073,7 @@ function startGuidedSimulation(){
  edan.fields={...edan.fields,evento:"SIMULACIÓN EDAN — NO OFICIAL",fenomeno:"Hidrometeorológico",municipio:"Centro",localidad:"Localidad Ejemplo",acceso:"Cerrado",descripcion:"Ejercicio de práctica: inundación con población afectada, acceso cerrado y servicio eléctrico suspendido."};
  edan.needs=[{id:uid("N"),desc:"",qty:"",priority:"1"}];currentStep=1;
  saveJSON(DRAFT_KEY,edan);persistCurrentDraft();hydrateForm();renderNeeds();renderWizard();renderAttachments();syncSimulationUI();showScreen("screen-edan");
+ trackEvent("simulacion_iniciada");
  toast("Simulación iniciada. Captura el caso usando los siete pasos.")
 }
 function syncSimulationUI(){
@@ -4042,7 +4102,10 @@ function evaluateGuidedSimulation(){
  document.getElementById("simulationResultTitle").textContent=all?"✓ Simulación completada correctamente":"Revisa algunos elementos";
  document.getElementById("simulationResultSummary").textContent=all?`Cumpliste los ${checks.length} criterios del ejercicio.`:`Cumpliste ${passed} de ${checks.length} criterios. Corrige los señalados y vuelve a evaluar.`;
  const finish=document.getElementById("simulationFinishBtn");finish.hidden=!all;
- if(all){guideState.simulationCompleted=true;saveJSON(APP_KEY,guideState);edan.simulation.completedAt=new Date().toISOString();persistCurrentDraft()}
+ if(all){
+  if(!edan.simulation.analyticsCompleted){trackEvent("simulacion_completada",{criterios:checks.length});edan.simulation.analyticsCompleted=true}
+  guideState.simulationCompleted=true;saveJSON(APP_KEY,guideState);edan.simulation.completedAt=new Date().toISOString();persistCurrentDraft()
+ }
  openModal("simulationResultModal")
 }
 function finishGuidedSimulation(){closeModal("simulationResultModal");showScreen("screen-guide");updateProgress();toast("Práctica integral completada. Ya puedes iniciar un EDAN real.")}
@@ -4168,7 +4231,8 @@ function restoreHistoryVersion(id,i){
 async function exportSingleEdan(rec){
  const attachments=[];for(const a of rec.attachments||[]){try{const fr=await dbGet(a.id);if(fr?.blob)attachments.push({meta:a,data:await blobToBase64(fr.blob)})}catch(e){}}
  const payload={schema:"EDAN-TABASCO-SINGLE",version:33,exportedAt:new Date().toISOString(),record:rec,attachments};
- downloadBlob(new Blob([JSON.stringify(payload)],{type:"application/json"}),`${(rec.fields?.evento||"EDAN").replace(/[^\wáéíóúñ-]+/gi,"_")}_${rec.id}.edan.json`)
+ downloadBlob(new Blob([JSON.stringify(payload)],{type:"application/json"}),`${(rec.fields?.evento||"EDAN").replace(/[^\wáéíóúñ-]+/gi,"_")}_${rec.id}.edan.json`);
+ trackEvent("edan_exportado",{modo:rec?.simulation?.active?"simulacion":"real"})
 }
 async function importSinglePayload(p){
  if(p?.schema!=="EDAN-TABASCO-SINGLE"||!p.record?.id)throw new Error("Archivo inválido");let incoming=deepCopy(p.record),records=getRecords(),drafts=getDrafts(),copyMode=false;
@@ -4181,7 +4245,7 @@ async function importSinglePayload(p){
  if(copyMode){const map=new Map();incoming.attachments=(incoming.attachments||[]).map(a=>{const nid=uid("F");map.set(a.id,nid);return {...a,id:nid}});for(const x of p.attachments||[]){if(map.has(x.meta?.id))x.__newid=map.get(x.meta.id)}}
  records.unshift(incoming);saveRecords(records);saveDrafts(drafts);
  for(const x of p.attachments||[]){const id=x.__newid||x.meta?.id;if(!id||!x.data)continue;try{await dbPut({id,ownerId:incoming.id,blob:base64ToBlob(x.data,x.meta?.type),name:x.meta?.name,type:x.meta?.type,size:x.meta?.size})}catch(e){}}
- renderSaved();toast("EDAN importado");return true
+ renderSaved();trackEvent("edan_importado");toast("EDAN importado");return true
 }
 async function backupAll(){
  saveAll(false);const files=await dbGetAll(),attachments=[];
@@ -4190,7 +4254,7 @@ async function backupAll(){
  const text=JSON.stringify(payload);
  if(!text||text.length<30){toast("No fue posible construir el respaldo.");return false}
  downloadBlob(new Blob([text],{type:"application/json"}),`Respaldo_General_EDAN_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.json`);
- saveJSON(BACKUP_META_KEY,{last:new Date().toISOString()});updateStorageDashboard();toast("Respaldo general generado");return true
+ saveJSON(BACKUP_META_KEY,{last:new Date().toISOString()});updateStorageDashboard();trackEvent("respaldo_generado",{tipo:"completo"});toast("Respaldo general generado");return true
 }
 function cloneEdanForImport(obj,newId,attachmentMap){
  const c=deepCopy(obj);c.id=newId;c.created=c.created||new Date().toISOString();c.updated=new Date().toISOString();
@@ -4258,7 +4322,7 @@ async function restoreBackupPayload(p){
   }
  }
  guideState=loadJSON(APP_KEY,{completed:{},interactions:{}});
- saveJSON(BACKUP_META_KEY,{last:new Date().toISOString()});renderSaved();updateProgress();updateStorageDashboard();toast("Respaldo restaurado");return true
+ saveJSON(BACKUP_META_KEY,{last:new Date().toISOString()});renderSaved();updateProgress();updateStorageDashboard();trackEvent("respaldo_restaurado",{modo:mode.toLowerCase()});toast("Respaldo restaurado");return true
 }
 
 function renderSaved(){
@@ -4486,6 +4550,7 @@ async function showValidationQR(rec=edan){
   <div class="qr-data-row"><b>Identificación</b><span>${esc(f.val_id_tipo||"")} · ${esc(maskedIdRef(f.val_id_ref))}</span></div>
   <div class="qr-data-row"><b>Fecha y hora</b><span>${esc(formatValidationDate(validation.generatedAt))}</span></div>
   <div class="qr-data-row"><b>Código SHA-256</b><code>${esc(validation.integrityHash)}</code></div>`;
+ trackEvent("qr_generado",{modo:rec?.simulation?.active?"simulacion":"real"});
  openModal("qrModal");
 }
 
@@ -4623,6 +4688,7 @@ async function generatePDF(rec){
   const result=await buildPDF(rec);
   if(rec===edan){upsertRecord()}
   downloadBlob(result.blob,result.filename);
+  trackEvent("pdf_generado",{modo:rec?.simulation?.active?"simulacion":"real"});
   toast("PDF generado con QR de validación");
   return result;
  }catch(e){
@@ -4645,6 +4711,7 @@ async function sharePDF(rec=edan){
     text:`EDAN ${rec.id} · ${rec.fields?.municipio||""} · generado ${formatValidationDate(result.validation.generatedAt)}`,
     files:[file]
    });
+   trackEvent("pdf_compartido",{modo:rec?.simulation?.active?"simulacion":"real"});
    toast("PDF compartido");
   }else{
    downloadBlob(result.blob,result.filename);
@@ -4687,6 +4754,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelect
  window.addEventListener("offline",()=>toast("Modo sin conexión activo"));
  window.addEventListener("online",()=>toast("Conexión restablecida"));
  updateStorageDashboard();
+ trackPWAState();
 })();
 </script>
 </body>

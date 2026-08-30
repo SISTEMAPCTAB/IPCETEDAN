@@ -52,3 +52,29 @@ V38 · Icono PWA e Inicio:
 - icono EDAN suministrado por el usuario integrado para Android/PWA, iPhone/iPad y acceso directo de escritorio;
 - variantes 192, 512, Apple Touch 180, favicon 32 y maskable;
 - ventajas de Inicio distribuidas en tres columnas iguales en PC/tablet y apiladas de forma compacta en móvil.
+
+
+V39 · GOOGLE ANALYTICS 4
+ID de medición: G-6YYVEDQMC7
+
+Eventos incorporados (sin datos personales ni contenido de expedientes):
+- pantalla_vista
+- guia_iniciada
+- modulo_completado (parámetro: modulo)
+- guia_completada
+- simulacion_iniciada
+- simulacion_completada
+- edan_iniciado
+- edan_guardado (nuevo / actualizacion)
+- edan_exportado
+- edan_importado
+- pdf_generado
+- pdf_compartido
+- qr_generado
+- respaldo_generado
+- respaldo_restaurado
+- pwa_instalada (navegadores que exponen appinstalled)
+- pwa_abierta
+- pwa_primera_apertura (útil especialmente en iOS/iPadOS)
+
+La analítica es opcional para la operación: si no hay conexión, la guía sigue funcionando y guardando localmente.
