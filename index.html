@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="40-offline-robusto">
+<meta name="application-version" content="41-responsables-edan">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2471,6 +2471,26 @@ textarea{width:100%}
   #screen-home .hero-benefits span b{font-size:10px}
 }
 
+
+/* V42 · Síntesis visual ¿Quién hace qué en el EDAN? */
+.roles-summary-visual{max-width:1180px;margin:14px auto 16px;aspect-ratio:16/9}
+.roles-summary-visual img{object-fit:contain}
+@media(max-width:700px){.roles-summary-visual{width:100%;max-width:none;margin:12px 0 14px;border-radius:12px}}
+
+/* V41 · ¿Quién realiza el EDAN? · contenido y actividad exclusivamente Módulo 1 */
+.edan-roles-section{border-top:4px solid var(--vino)}
+.subtopic-kicker{display:inline-flex;padding:4px 8px;border-radius:999px;background:#f4e8ec;color:var(--vino);font-size:7.5px;font-weight:950;letter-spacing:.7px;margin-bottom:5px}
+.edan-role-flow{display:grid;grid-template-columns:1fr;gap:6px;align-items:stretch;margin:14px 0}
+.role-flow-card{min-width:0;padding:10px;border:1px solid #dfd9d5;border-radius:13px;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.role-flow-card b{font-size:8.4px;color:var(--vino);line-height:1.25}.role-flow-card span{font-size:8px;line-height:1.4;color:#625c5e;overflow-wrap:anywhere}.role-flow-card.final{background:#edf7f3;border-color:#c8dfd5}.role-flow-card.final b{color:#356d58}.role-flow-arrow{display:grid;place-items:center;color:var(--dorado);font-size:16px;font-weight:950;height:16px;transform:rotate(90deg)}
+.roles-table-wrap{margin:15px 0 12px}.roles-table-wrap h4{margin:0 0 7px;color:#443b3e;font-size:11px}.roles-table{border:1px solid #dfd9d5;border-radius:13px;overflow:hidden;background:#fff}.roles-row{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}.roles-row>div{padding:8px 10px;font-size:8.4px;line-height:1.35;border-top:1px solid #ece7e3;overflow-wrap:anywhere}.roles-row>div+div{border-left:1px solid #ece7e3}.roles-head>div{border-top:0;background:#f6f1ee;color:var(--vino);font-weight:900}
+.edan-specialist-warning{margin-top:14px;padding:12px 13px;border-radius:14px;background:#fff4e5;border:1px solid #e6c990;border-left:5px solid var(--dorado)}.warning-title{font-size:10px;font-weight:950;color:#7a5419;margin-bottom:6px}.edan-specialist-warning p{font-size:8.8px;line-height:1.48;margin:5px 0;color:#665b4d}
+.activity-order-badge{display:inline-flex;padding:4px 7px;margin-bottom:5px;border-radius:999px;background:#edf2f5;color:#496775;font-size:7.4px;font-weight:900}
+.roles-activity-list{display:grid;gap:8px;margin:10px 0}.role-question{border:1px solid #dfd9d5;border-radius:12px;padding:10px;background:#fff;transition:background .16s,border-color .16s,box-shadow .16s}.role-question.selected{border-color:#9bb8c5;box-shadow:0 0 0 2px rgba(34,97,129,.08)}.role-question.correct{background:#edf7f3;border-color:#8dc4ad}.role-question.wrong{background:#fff0ef;border-color:#df9b96}.role-question h4{margin:0 0 4px;font-size:8px;text-transform:uppercase;letter-spacing:.4px;color:#7a6c71}.role-question p{margin:0 0 8px;font-size:9px;line-height:1.42;color:#474143}.role-question select{width:100%;max-width:100%;min-height:40px;padding:7px 34px 7px 9px;border:1px solid #d8d1ce;border-radius:10px;background:#fff;color:#3c3839;font:inherit;font-size:9px;line-height:1.3}.role-question.correct select{border-color:#5c9a7d}.role-question.wrong select{border-color:#c36c67}.role-question .role-answer-note{display:none;margin-top:6px;font-size:8px;font-weight:800}.role-question.correct .role-answer-note,.role-question.wrong .role-answer-note{display:block}.role-question.correct .role-answer-note{color:#3d765f}.role-question.wrong .role-answer-note{color:#9b4d49}
+@media(min-width:1180px){.edan-role-flow{grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr);gap:7px}.role-flow-arrow{height:auto;transform:none;font-size:18px}}
+@media(max-width:760px){.roles-row{grid-template-columns:1fr}.roles-head{display:none}.roles-row{margin:0;border-top:1px solid #ece7e3}.roles-row:first-of-type+ .roles-row{border-top:0}.roles-row>div{border:0!important;padding:6px 9px}.roles-row>div:first-child{padding-bottom:2px;color:#6a5f63;font-weight:800}.roles-row>div:last-child{padding-top:2px;color:#3e555f}.role-question select{font-size:16px;min-height:44px}}
+@media(max-width:390px){.edan-roles-section,.roles-activity{padding-left:10px!important;padding-right:10px!important}.role-question{padding:9px}.role-question p{font-size:9px}.edan-specialist-warning{padding:10px 11px}}
+
 </style>
 </head>
 <body>
@@ -3263,6 +3283,14 @@ const DB_NAME="ipcet_edan_files_v2";
 const DB_STORE="files";
 const municipios=["Balancán","Cárdenas","Centla","Centro","Comalcalco","Cunduacán","Emiliano Zapata","Huimanguillo","Jalapa","Jalpa de Méndez","Jonuta","Macuspana","Nacajuca","Paraíso","Tacotalpa","Teapa","Tenosique"];
 let guideState=loadJSON(APP_KEY,{completed:{},interactions:{},simulationCompleted:false});
+(function migrateM1RolesV41(){
+ guideState.completed=guideState.completed||{};guideState.interactions=guideState.interactions||{};guideState.migrations=guideState.migrations||{};
+ if(guideState.migrations.m1RolesV41)return;
+ if(guideState.completed[1] && !guideState.interactions.m1)guideState.interactions.m1=true;
+ if(guideState.completed[1] && !guideState.interactions.m1_roles_v41)guideState.completed[1]=false;
+ guideState.migrations.m1RolesV41=true;
+ saveJSON(APP_KEY,guideState);
+})();
 let currentStep=1;
 let edan=loadJSON(DRAFT_KEY,null)||newEdanObject();
 let db=null;
@@ -3423,10 +3451,68 @@ const MODULES={
 <figure class="module-visual visual-hero" data-visual="m1"><img src="assets/m1.jpg" width="1440" height="811" loading="lazy" decoding="async" alt="Infografía Del daño a la necesidad: daño, impacto, riesgo activo y necesidad."></figure>
 <div class="lesson key"><h3>Idea central</h3><p>La <b>Evaluación de Daños y Análisis de Necesidades (EDAN)</b> organiza información sobre las consecuencias de un evento para apoyar decisiones. Debe responder: <b>¿qué ocurrió?, ¿qué consecuencias produjo?, ¿qué riesgos continúan? y ¿qué se necesita?</b></p>
 <div class="learning-flow"><div class="flow-step"><strong>1 · DAÑO</strong><span>Lo afectado</span></div><div class="flow-step"><strong>2 · IMPACTO</strong><span>La consecuencia</span></div><div class="flow-step"><strong>3 · RIESGO</strong><span>Lo que puede agravarse</span></div><div class="flow-step"><strong>4 · NECESIDAD</strong><span>Lo que debe hacerse</span></div></div></div>
+
+<div class="lesson edan-roles-section" id="m1RolesSection">
+ <div class="subtopic-kicker">SUBTEMA</div>
+ <h3>¿Quién realiza el EDAN?</h3>
+ <p><b>El EDAN es un proceso coordinado.</b></p>
+ <p>El levantamiento inicial lo realizan brigadas o equipos con personal capacitado que recopilan y documentan información directamente en las zonas afectadas.</p>
+ <p>La <b>Unidad Municipal de Protección Civil (UMPC)</b> integra y verifica la información correspondiente al municipio, mientras que las instituciones y dependencias competentes aportan las evaluaciones especializadas de su sector.</p>
+ <p>Cuando la magnitud del evento requiere coordinación estatal, el <b>Instituto de Protección Civil del Estado de Tabasco (IPCET)</b> consolida la información municipal y sectorial para establecer un panorama general de daños, necesidades y prioridades de atención.</p>
+
+ <figure class="module-visual visual-framed roles-summary-visual" data-visual="m1-responsables">
+  <img src="assets/m1_responsables_edan.jpg" width="1536" height="864" loading="lazy" decoding="async" alt="Infografía Quién hace qué en el EDAN: zona afectada, brigada EDAN, UMPC, información sectorial, IPCET y prioridades y decisiones; recuerda que el EDAN no sustituye un dictamen especializado.">
+ </figure>
+
+ <div class="edan-role-flow" aria-label="Flujo de responsabilidades del EDAN">
+  <div class="role-flow-card"><b>ZONA AFECTADA</b><span>Lugar donde se identifican y documentan daños, afectaciones y necesidades.</span></div>
+  <div class="role-flow-arrow" aria-hidden="true">→</div>
+  <div class="role-flow-card"><b>BRIGADA EDAN</b><span>Observa, registra, fotografía, ubica y reporta la información obtenida en campo.</span></div>
+  <div class="role-flow-arrow" aria-hidden="true">→</div>
+  <div class="role-flow-card"><b>UMPC</b><span>Recibe, verifica, depura e integra la información correspondiente al municipio.</span></div>
+  <div class="role-flow-arrow" aria-hidden="true">→</div>
+  <div class="role-flow-card"><b>INFORMACIÓN SECTORIAL</b><span>Instituciones y dependencias aportan información y evaluaciones de acuerdo con sus atribuciones.</span></div>
+  <div class="role-flow-arrow" aria-hidden="true">→</div>
+  <div class="role-flow-card"><b>IPCET</b><span>Cuando corresponde al ámbito estatal, consolida la información municipal y sectorial para construir el panorama general de la emergencia.</span></div>
+  <div class="role-flow-arrow" aria-hidden="true">→</div>
+  <div class="role-flow-card final"><b>PRIORIDADES Y DECISIONES</b><span>La información integrada permite identificar necesidades, establecer prioridades y orientar las acciones de respuesta.</span></div>
+ </div>
+
+ <div class="roles-table-wrap">
+  <h4>Responsabilidades dentro del EDAN</h4>
+  <div class="roles-table" role="table" aria-label="Responsabilidades dentro del EDAN">
+   <div class="roles-row roles-head" role="row"><div role="columnheader">Función</div><div role="columnheader">Responsable principal</div></div>
+   <div class="roles-row" role="row"><div role="cell">Observar y levantar información en campo</div><div role="cell">Brigada o equipo EDAN</div></div>
+   <div class="roles-row" role="row"><div role="cell">Documentar daños, ubicación y evidencia</div><div role="cell">Brigada o equipo EDAN</div></div>
+   <div class="roles-row" role="row"><div role="cell">Verificar y depurar información municipal</div><div role="cell">UMPC</div></div>
+   <div class="roles-row" role="row"><div role="cell">Aportar información especializada</div><div role="cell">Dependencias e instituciones competentes</div></div>
+   <div class="roles-row" role="row"><div role="cell">Integrar el EDAN municipal</div><div role="cell">UMPC</div></div>
+   <div class="roles-row" role="row"><div role="cell">Consolidar información en el ámbito estatal</div><div role="cell">IPCET</div></div>
+   <div class="roles-row" role="row"><div role="cell">Establecer necesidades y prioridades</div><div role="cell">Autoridades de coordinación con base en la información del EDAN</div></div>
+  </div>
+ </div>
+
+ <div class="edan-specialist-warning">
+  <div class="warning-title">EDAN ≠ DICTAMEN ESPECIALIZADO</div>
+  <p>La brigada EDAN identifica y documenta daños observables, pero no sustituye la evaluación técnica de especialistas.</p>
+  <p>Cuando se detecten posibles daños estructurales, eléctricos, sanitarios, hidráulicos, geotécnicos o de cualquier otra naturaleza que requieran conocimientos especializados, deberán ser canalizados a la institución o área técnica competente.</p>
+  <p>El propósito del EDAN es integrar información sobre daños, afectaciones y necesidades para apoyar la coordinación y la toma de decisiones.</p>
+ </div>
+</div>
+
+<div class="lesson interactive roles-activity" id="m1RolesActivityBox">
+ <div class="activity-order-badge">Actividad obligatoria 1 de 2</div>
+ <h3>Actividad: ¿A quién corresponde?</h3>
+ <p>Selecciona el responsable principal para cada situación. Las situaciones y las opciones se mezclan al iniciar o reiniciar la actividad.</p>
+ <div id="m1RolesActivity" class="roles-activity-list" aria-live="polite"></div>
+ <div class="activity-actions"><button class="btn secondary sm" type="button" id="resetM1Roles">↻ Reiniciar actividad</button><button class="btn blue sm" type="button" id="checkM1Roles">Comprobar</button></div>
+ <div class="activity-score" id="score-m1roles"></div>
+</div>
+
 <div class="two"><div class="info-box"><b>🔎 Evaluar daños</b><span>Personas, viviendas, servicios, infraestructura, accesos y entorno.</span></div><div class="info-box"><b>🎯 Analizar necesidades</b><span>Acciones, recursos y capacidades requeridas para atender las consecuencias.</span></div></div>
 <div class="lesson"><h3>Cuatro principios</h3><div class="chips"><span class="chip v">Objetiva</span><span class="chip b">Oportuna</span><span class="chip g">Verificable</span><span class="chip o">Útil para decidir</span></div><p>La rapidez por sí sola no basta: la información debe señalar <b>lugar, hora y fuente</b>, y distinguir observación de suposición.</p></div>
 <div class="lesson"><h3>Qué NO es un EDAN</h3><p>No es únicamente una lista de daños, una colección de fotografías ni un inventario de recursos. Tampoco sustituye dictámenes técnicos especializados. El EDAN integra una <b>visión operativa</b>: identifica consecuencias, riesgos que permanecen, capacidades disponibles y necesidades que requieren decisión.</p><p>Una observación adquiere valor cuando permite responder <b>qué significa para la población o para la operación</b>.</p></div>
-<div class="lesson interactive"><h3>Actividad · Arrastra y clasifica</h3><p>Arrastra cada tarjeta a <b>Daño</b> o <b>Necesidad</b>. En teléfono también puedes tocar una tarjeta y luego tocar el destino.</p>
+<div class="lesson interactive"><div class="activity-order-badge">Actividad obligatoria 2 de 2</div><h3>Actividad · Arrastra y clasifica</h3><p>Arrastra cada tarjeta a <b>Daño</b> o <b>Necesidad</b>. En teléfono también puedes tocar una tarjeta y luego tocar el destino.</p>
 <div class="drag-bank" id="m1Bank">
  <div class="drag-card" draggable="true" data-id="a" data-answer="damage">La red de agua quedó fuera de servicio.</div>
  <div class="drag-card" draggable="true" data-id="b" data-answer="need">Proporcionar agua segura durante 24 horas.</div>
@@ -3546,8 +3632,14 @@ const MODULES={
 <figure class="module-visual visual-module-capstone" data-visual="m6_glance"><img src="assets/m6_glance.jpg" width="1440" height="810" loading="lazy" decoding="async" alt="Infografía Cómo leer un EDAN de un vistazo: ubicación, población, daños, riesgos, necesidades, acciones y pendientes."></figure>`
 };
 
+const M1_ROLES_ACTIVITY_KEY="m1_roles_v41";
 function activityKey(n){return "m"+n}
-function isModulePassed(n){return !!guideState.interactions[activityKey(n)] || !!guideState.completed[n]}
+function requiredActivityKeys(n){return n===1?[activityKey(1),M1_ROLES_ACTIVITY_KEY]:[activityKey(n)]}
+function isModulePassed(n){
+ if(n===1)return requiredActivityKeys(1).every(k=>!!guideState.interactions[k]);
+ return !!guideState.interactions[activityKey(n)] || !!guideState.completed[n]
+}
+function moduleActivityCount(n){const keys=requiredActivityKeys(n);return {done:keys.filter(k=>!!guideState.interactions[k]).length,total:keys.length}}
 function canOpenModule(n){
  if(n<=1)return true;
  for(let i=1;i<n;i++)if(!guideState.completed[i])return false;
@@ -3555,7 +3647,7 @@ function canOpenModule(n){
 }
 function moduleActivityMessage(n){
  const names={
-  1:"Clasifica correctamente las 6 situaciones entre Daño y Necesidad.",
+  1:"Completa las 2 actividades obligatorias: responsabilidades dentro del EDAN y clasificación entre Daño y Necesidad.",
   2:"Ordena correctamente las 6 etapas del proceso.",
   3:"Completa correctamente las 6 verificaciones de preparación.",
   4:"Relaciona correctamente las 6 observaciones con su sector.",
@@ -3570,9 +3662,10 @@ function updateModuleGate(n){
  const gate=document.getElementById("moduleGate");
  if(gate){
    gate.className="module-gate "+(passed?"passed":"pending");
+   const count=moduleActivityCount(n);
    gate.innerHTML=passed
-    ? `<div class="module-gate-icon">✓</div><div><b>Actividad superada</b><span>Puedes continuar. El módulo queda registrado como completado al superar la actividad.</span></div>`
-    : `<div class="module-gate-icon">!</div><div><b>Actividad obligatoria</b><span>${moduleActivityMessage(n)} El siguiente módulo permanecerá bloqueado hasta acertar.</span></div>`;
+    ? `<div class="module-gate-icon">✓</div><div><b>${n===1?"2 de 2 actividades superadas":"Actividad superada"}</b><span>Puedes continuar. El módulo queda registrado como completado al superar ${n===1?"ambas actividades":"la actividad"}.</span></div>`
+    : `<div class="module-gate-icon">!</div><div><b>${n===1?`${count.done} de ${count.total} actividades completadas`:"Actividad obligatoria"}</b><span>${moduleActivityMessage(n)} El siguiente módulo permanecerá bloqueado hasta completar correctamente ${n===1?"ambas actividades":"la actividad"}.</span></div>`;
  }
  const c=document.querySelector("[data-complete]");
  if(c){
@@ -3617,18 +3710,22 @@ function completeModule(n,showMessage=true){
  }
  return true;
 }
-function setActivityResult(n,ok){
+function setNamedActivityResult(n,key,ok){
  const wasCompleted=!!guideState.completed[n];
- guideState.interactions[activityKey(n)]=!!ok;
- if(ok){
+ guideState.interactions[key]=!!ok;
+ const modulePassed=isModulePassed(n);
+ if(modulePassed){
    guideState.completed[n]=true;
    trackModuleCompletion(n,wasCompleted);
+ }else if(n===1){
+   guideState.completed[n]=false;
  }
  saveJSON(APP_KEY,guideState);
  updateProgress();
  updateModuleGate(n);
  if(ok){
-   toast("Actividad correcta. Siguiente módulo desbloqueado.");
+   if(modulePassed)toast(n===1?"✓ Las 2 actividades del Módulo 1 están completas. Módulo 2 desbloqueado.":"Actividad correcta. Siguiente módulo desbloqueado.");
+   else if(n===1)toast("✓ Actividad completada. Falta 1 actividad obligatoria del Módulo 1.");
    const allDone=Object.values(guideState.completed||{}).filter(Boolean).length===6;
    if(allDone && n===6 && !guideState.celebrated){
      guideState.celebrated=true;saveJSON(APP_KEY,guideState);
@@ -3636,6 +3733,7 @@ function setActivityResult(n,ok){
    }
  }
 }
+function setActivityResult(n,ok){return setNamedActivityResult(n,activityKey(n),ok)}
 function openModule(n){
  if(!canOpenModule(n)){
    toast(`Completa correctamente el Módulo ${n-1} para desbloquear este módulo.`);
@@ -3708,6 +3806,70 @@ function bindModuleInteractions(n){
    });
  }
 
+ // M1 · ¿A quién corresponde? (clave independiente y aleatoriedad real por inicio/reinicio)
+ const roleCases=[
+  {id:"role_housing",situation:"Contabilizar y documentar viviendas afectadas en una comunidad.",answer:"brigada"},
+  {id:"role_municipal",situation:"Integrar los reportes procedentes de diferentes comunidades del municipio.",answer:"umpc"},
+  {id:"role_bridge",situation:"Determinar técnicamente la seguridad estructural de un puente afectado.",answer:"tecnica"},
+  {id:"role_health",situation:"Evaluar técnicamente las afectaciones de un establecimiento de salud.",answer:"salud"},
+  {id:"role_state",situation:"Consolidar información procedente de diferentes municipios cuando la emergencia requiere coordinación estatal.",answer:"ipcet"}
+ ];
+ const roleOptions=[
+  {value:"brigada",label:"Brigada o equipo EDAN"},
+  {value:"umpc",label:"UMPC"},
+  {value:"tecnica",label:"Área o institución técnica competente"},
+  {value:"salud",label:"Sector Salud / autoridad competente"},
+  {value:"ipcet",label:"IPCET"}
+ ];
+ function shuffledCopy(list){
+  const a=[...list];
+  for(let i=a.length-1;i>0;i--){
+   let j;
+   try{const r=new Uint32Array(1);crypto.getRandomValues(r);j=r[0]%(i+1)}catch(e){j=Math.floor(Math.random()*(i+1))}
+   [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a
+ }
+ function renderM1RolesActivity(){
+  const holder=document.getElementById("m1RolesActivity");if(!holder)return;
+  holder.innerHTML="";
+  shuffledCopy(roleCases).forEach((item,index)=>{
+   const q=document.createElement("div");q.className="role-question";q.dataset.caseId=item.id;q.dataset.answer=item.answer;
+   const title=document.createElement("h4");title.textContent=`Situación ${index+1}`;
+   const text=document.createElement("p");text.textContent=item.situation;
+   const select=document.createElement("select");select.setAttribute("aria-label",`Responsable para: ${item.situation}`);select.dataset.roleSelect="1";
+   const placeholder=document.createElement("option");placeholder.value="";placeholder.textContent="Selecciona el responsable…";select.appendChild(placeholder);
+   shuffledCopy(roleOptions).forEach(opt=>{const o=document.createElement("option");o.value=opt.value;o.textContent=opt.label;select.appendChild(o)});
+   const note=document.createElement("div");note.className="role-answer-note";
+   select.addEventListener("change",()=>{q.classList.remove("correct","wrong");q.classList.toggle("selected",!!select.value);note.textContent="";clearFeedback(document.getElementById("score-m1roles"))});
+   q.append(title,text,select,note);holder.appendChild(q)
+  });
+  const alreadyDone=!!guideState.interactions[M1_ROLES_ACTIVITY_KEY];
+  const box=document.getElementById("score-m1roles");
+  if(alreadyDone){showFeedback(box,true,"✓ Actividad completada. Has identificado correctamente las responsabilidades dentro del proceso EDAN.")}
+  else clearFeedback(box)
+ }
+ const resetM1Roles=()=>{
+  guideState.interactions[M1_ROLES_ACTIVITY_KEY]=false;guideState.completed[1]=false;saveJSON(APP_KEY,guideState);updateProgress();updateModuleGate(1);
+  renderM1RolesActivity();toast("Actividad reiniciada. Situaciones y respuestas fueron mezcladas nuevamente.")
+ };
+ renderM1RolesActivity();
+ const resetRolesBtn=document.getElementById("resetM1Roles");if(resetRolesBtn)resetRolesBtn.addEventListener("click",resetM1Roles);
+ const checkRolesBtn=document.getElementById("checkM1Roles");if(checkRolesBtn)checkRolesBtn.addEventListener("click",()=>{
+  const questions=[...document.querySelectorAll("#m1RolesActivity .role-question")];
+  const unanswered=questions.filter(q=>!q.querySelector("select")?.value).length;
+  if(unanswered){toast(`Selecciona una respuesta en las ${unanswered} situaciones pendientes.`);return}
+  let score=0;
+  questions.forEach(q=>{
+   const select=q.querySelector("select"),ok=select.value===q.dataset.answer,note=q.querySelector(".role-answer-note");
+   q.classList.remove("correct","wrong");q.classList.add(ok?"correct":"wrong");
+   if(ok){score++;note.textContent="✓ Correspondencia correcta."}else note.textContent="Revisa quién tiene la responsabilidad principal en esta situación."
+  });
+  const ok=score===questions.length;
+  showFeedback(document.getElementById("score-m1roles"),ok,ok?"✓ Actividad completada. Has identificado correctamente las responsabilidades dentro del proceso EDAN.":`${score} de ${questions.length} correctas. Corrige únicamente las situaciones marcadas y vuelve a comprobar.`);
+  setNamedActivityResult(1,M1_ROLES_ACTIVITY_KEY,ok)
+ });
+
  // M1 · Daño / necesidad
  setupDraggable("#m1Bank .drag-card, #m5Bank .drag-card, .drop-zone .drag-card",".drop-zone");
  const resetM1=()=>{
@@ -3715,7 +3877,7 @@ function bindModuleInteractions(n){
    ["a","b","c","d","e","f"].forEach(id=>{const c=document.querySelector(`#moduleContent .drag-card[data-id="${id}"]`);if(c)bank.appendChild(c)});
    document.querySelectorAll("#moduleContent .drop-zone").forEach(z=>z.classList.remove("good","bad","drag-over"));
    setSelected(null);clearFeedback(document.getElementById("score-m1drag"));
-   if(!guideState.completed[n]){guideState.interactions[activityKey(n)]=false;saveJSON(APP_KEY,guideState);updateModuleGate(n)}
+   guideState.interactions[activityKey(1)]=false;guideState.completed[1]=false;saveJSON(APP_KEY,guideState);updateProgress();updateModuleGate(1)
  };
  const m1Btn=document.getElementById("checkM1Drag");if(m1Btn)m1Btn.addEventListener("click",()=>{
    const cards=[...document.querySelectorAll("#moduleContent .drag-card[data-answer]")].filter(x=>["damage","need"].includes(x.dataset.answer));

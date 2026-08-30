@@ -14,3 +14,14 @@ IMPORTANTE PARA GITHUB PAGES:
 3. Cierra y vuelve a abrir la PWA.
 4. Después prueba con modo avión.
 5. Si el teléfono conserva un Service Worker anterior, elimina la PWA/atajo anterior, visita la URL actualizada y vuelve a agregarla a la pantalla de inicio.
+
+V41 · Responsables del EDAN:
+- Subtema “¿Quién realiza el EDAN?” dentro del Módulo 1, después de la Idea central.
+- Flujo visual responsivo Zona afectada → Brigada EDAN → UMPC → Información sectorial → IPCET → Prioridades y decisiones.
+- Cuadro de responsabilidades y advertencia EDAN ≠ dictamen especializado.
+- Nueva actividad obligatoria “¿A quién corresponde?” con mezcla independiente de situaciones y respuestas.
+- Clave nueva de progreso: m1_roles_v41.
+- Módulo 1 exige las dos actividades; se conserva el logro previo de Daño/Necesidad mediante migración compatible.
+
+
+V42: Se incorporó la infografía '¿Quién hace qué en el EDAN?' únicamente en Módulo 1, dentro del subtema '¿Quién realiza el EDAN?', después de la explicación introductoria y antes del flujo responsivo. Se agregó al precache offline. No se modificaron actividades, progreso ni almacenamiento.
