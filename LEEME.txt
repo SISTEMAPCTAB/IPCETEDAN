@@ -25,3 +25,27 @@ V41 · Responsables del EDAN:
 
 
 V42: Se incorporó la infografía '¿Quién hace qué en el EDAN?' únicamente en Módulo 1, dentro del subtema '¿Quién realiza el EDAN?', después de la explicación introductoria y antes del flujo responsivo. Se agregó al precache offline. No se modificaron actividades, progreso ni almacenamiento.
+
+V43:
+- Corrige compactación y distribución móvil de la actividad “¿A quién corresponde?”.
+- Mantiene controles táctiles de 44 px y fuente de 16 px en select para evitar zoom de iOS.
+- Refuerza box-sizing/min-width/max-width en controles y tarjetas para prevenir campos alargados o desbordados en toda la aplicación.
+- Reserva espacio inferior para que la navegación fija no cubra contenido.
+- No modifica JavaScript, respuestas, progreso, almacenamiento, expedientes, PDF, QR ni Analytics.
+- Cache PWA actualizada a v43.
+
+V44:
+- Mejora exclusivamente la legibilidad tipográfica en módulos para teléfonos.
+- Aumenta textos didácticos, instrucciones, etiquetas, actividades, navegación y tarjetas de módulos.
+- Conserva inputs/select en 16 px para evitar zoom automático en iOS.
+- No modifica JavaScript, respuestas, progreso, almacenamiento, expedientes, imágenes, PDF, QR ni Analytics.
+- Cache PWA actualizada a v44.
+
+V45:
+- Corrige exclusivamente la presentación móvil de los seis sectores del Módulo 4.
+- El icono tiene ahora una columna reservada y no puede invadir el nombre del sector.
+- Conserva asociación mediante toque/mouse, Comprobar, Reiniciar y respuestas originales.
+- Refuerza la misma separación en las tarjetas de observaciones del Módulo 4.
+- Incluye reglas específicas para <=700, <=390 y <=340 px.
+- No modifica JavaScript, progreso, almacenamiento, imágenes, expedientes, PDF, QR ni Analytics.
+- Cache PWA actualizada a v45.
