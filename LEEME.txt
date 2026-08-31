@@ -58,3 +58,17 @@ V46:
 - VALIDACIÓN DEL DOCUMENTO se mueve al inicio del reporte, antes de Identificación.
 - Formulario EDAN forzado a una columna hasta 820 px; acciones se envuelven para evitar recortes.
 - Cache PWA actualizada a v46.
+
+V47 · Auditoría de guardado y respaldo:
+- Corrige injectOptionalScript como async (regresión detectada en v46).
+- saveJSON verifica por lectura que localStorage realmente conservó la escritura.
+- Guardar ya no muestra éxito si el progreso o borrador no pudieron persistir.
+- Un EDAN existente no se sobrescribe si primero no pudo archivarse su versión anterior.
+- Perfil local y anexos validan éxito antes de anunciar guardado.
+- Los anexos se verifican mediante escritura+lectura en IndexedDB.
+- Importación usa escritura agrupada con reversión ante fallo.
+- Respaldo completo exige que el estado actual esté guardado y contabiliza anexos omitidos.
+- REEMPLAZAR se cancela si no se confirmó previamente un respaldo completo de seguridad.
+- Restauración combinada usa escritura agrupada con reversión.
+- Centro de almacenamiento incorpora prueba real de localStorage + IndexedDB.
+- No se modificaron contenido EDAN ni actividades.

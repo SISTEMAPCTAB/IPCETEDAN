@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="46-movil-pdf-qr-validacion-inicial">
+<meta name="application-version" content="47-guardado-respaldo-auditado">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2867,6 +2867,15 @@ textarea{width:100%}
   }
 }
 
+
+/* =========================================================
+   V47 · Auditoría de guardado y respaldo
+   ========================================================= */
+.storage-safety-note.storage-check{display:flex;gap:4px;align-items:flex-start;flex-wrap:wrap}
+.storage-safety-note.storage-check.ok{background:#edf7f3;border-left-color:#2f7356;color:#46675b}
+.storage-safety-note.storage-check.warn{background:#fff7e8;border-left-color:#c88b2f;color:#705c32}
+.storage-safety-note.storage-check.error{background:#fdeeee;border-left-color:#a23e3e;color:#7c3c3c}
+
 </style>
 </head>
 <body>
@@ -3341,6 +3350,7 @@ textarea{width:100%}
   <div><b id="storageTrash">0</b><span>Papelera</span></div>
   <div><b id="storageLastBackup">—</b><span>Último respaldo</span></div>
  </div>
+ <div class="storage-safety-note storage-check" id="storageHealth" aria-live="polite"><b>Verificando almacenamiento…</b><span> Comprobando datos y anexos locales.</span></div>
  <div class="storage-safety-note"><b>Protección activa:</b> Papelera antes de eliminación, historial de revisiones, anexos preservados para recuperación, autoguardado y respaldo general.</div>
  <div class="storage-actions">
   <button class="btn primary sm" id="newFromSaved">＋ Nuevo EDAN</button>
@@ -3349,6 +3359,7 @@ textarea{width:100%}
   <button class="btn teal-action sm" id="backupAllBtn">🛡️ Crear respaldo completo</button>
   <button class="btn gold-action sm" id="restoreAllBtn">↺ Recuperar respaldo completo</button>
   <button class="btn soft sm" id="trashBtn">🗑️ Papelera</button>
+  <button class="btn secondary sm" id="verifyStorageBtn">✓ Verificar almacenamiento</button>
   <input type="file" id="importEdanFile" accept=".json,application/json" hidden>
   <input type="file" id="restoreAllFile" accept=".json,application/json" hidden>
  </div>
@@ -3695,13 +3706,30 @@ function uid(prefix="EDAN"){return prefix+"-"+Date.now().toString(36)+"-"+Math.r
 function newEdanObject(){return {id:uid(),created:new Date().toISOString(),updated:new Date().toISOString(),fields:{},needs:[{id:uid("N"),desc:"",qty:"",priority:"1"}],attachments:[],visitedSteps:[1]}}
 function loadJSON(k,fallback){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fallback}catch(e){return fallback}}
 function saveJSON(k,v){
- try{localStorage.setItem(k,JSON.stringify(v));return true}
- catch(e){
+ try{
+  const text=JSON.stringify(v);
+  localStorage.setItem(k,text);
+  if(localStorage.getItem(k)!==text)throw new Error("La verificación de escritura local no coincidió");
+  return true
+ }catch(e){
   console.error("No fue posible guardar localmente",e);
   try{setStatus("Error de guardado")}catch(_){}
   try{toast("No fue posible guardar: revisa el espacio disponible del navegador.")}catch(_){}
   return false
  }
+}
+function commitJSONBatch(entries){
+ const before=new Map(entries.map(([k])=>[k,localStorage.getItem(k)])),attempted=[];
+ for(const [k,v] of entries){
+  attempted.push(k);
+  if(!saveJSON(k,v)){
+   for(const key of attempted.reverse()){
+    try{const prev=before.get(key);if(prev===null)localStorage.removeItem(key);else localStorage.setItem(key,prev)}catch(e){console.error("No se pudo revertir",key,e)}
+   }
+   return false
+  }
+ }
+ return true
 }
 function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove("show"),1800)}
 function setStatus(msg="Guardado local"){
@@ -3774,7 +3802,7 @@ function showScreen(id){
  if(id==="screen-guide"||id==="screen-module") document.querySelector('[data-nav="guide"]').classList.add("active");
  if(id==="screen-edan") document.querySelector('[data-nav="edan"]').classList.add("active");
  if(id==="screen-edan"){hydrateForm();renderWizard();renderAttachments();renderNeeds();updateReportPreview();updateEDANVisuals();syncSimulationUI();setStatus("Guardado local")}
- if(id==="screen-saved") renderSaved();
+ if(id==="screen-saved"){renderSaved();verifyStorageHealth(false)}
  requestAnimationFrame(()=>scrollPageTop("auto"));
 }
 
@@ -3795,13 +3823,18 @@ document.getElementById("simulationFinishBtn")?.addEventListener("click",finishG
 
 
 function saveAll(show=true){
- saveJSON(APP_KEY,guideState);
+ const okProgress=saveJSON(APP_KEY,guideState);
  collectForm();
  edan.updated=new Date().toISOString();
- persistCurrentDraft();
- setStatus();
- updateProgress();
- if(show) toast("Avance y borrador guardados localmente");
+ const okDraft=persistCurrentDraft();
+ if(okProgress&&okDraft){
+  setStatus("Guardado local");updateProgress();
+  if(show)toast("Avance y borrador guardados localmente");
+  return true
+ }
+ setStatus("Error de guardado");
+ if(show)toast("No se confirmó el guardado. Genera un respaldo antes de cerrar.");
+ return false
 }
 document.getElementById("globalSave").addEventListener("click",()=>saveAll(true));
 const homeSaveBtn=document.getElementById("homeSave");if(homeSaveBtn)homeSaveBtn.addEventListener("click",()=>saveAll(true));
@@ -4527,13 +4560,23 @@ function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt
 document.getElementById("geoBtn").addEventListener("click",()=>{if(!navigator.geolocation)return toast("Geolocalización no disponible");navigator.geolocation.getCurrentPosition(pos=>{document.getElementById("edanForm").elements.coordenadas.value=pos.coords.latitude.toFixed(6)+", "+pos.coords.longitude.toFixed(6);collectForm();toast("Coordenadas agregadas")},()=>toast("No fue posible obtener la ubicación"),{enableHighAccuracy:true,timeout:10000})});
 
 async function addFiles(files){
- if(!db)await initDB();
+ try{if(!db)await initDB()}catch(e){console.error(e);toast("No está disponible el almacenamiento local de anexos.");return false}
+ let saved=0,failed=0;
  for(const file of [...files]){
-  if(file.size>15*1024*1024){toast("Se omitió un archivo mayor de 15 MB");continue}
-  const id=uid("F");const meta={id,name:file.name,type:file.type||"application/octet-stream",size:file.size};
-  await dbPut({id,ownerId:edan.id,name:file.name,type:meta.type,size:file.size,blob:file});edan.attachments.push(meta)
+  if(file.size>15*1024*1024){failed++;continue}
+  const id=uid("F"),meta={id,name:file.name,type:file.type||"application/octet-stream",size:file.size};
+  try{
+   await dbPut({id,ownerId:edan.id,name:file.name,type:meta.type,size:file.size,blob:file});
+   const verify=await dbGet(id);
+   if(!verify?.blob)throw new Error("No se confirmó el anexo");
+   edan.attachments.push(meta);saved++
+  }catch(e){failed++;console.error("No se pudo guardar anexo",file.name,e)}
  }
- persistCurrentDraft();renderAttachments();toast("Anexos guardados localmente")
+ const draftOk=persistCurrentDraft();renderAttachments();updateEDANVisuals();
+ if(saved&&draftOk)toast(failed?`${saved} anexo(s) guardados; ${failed} omitido(s).`:"Anexos guardados localmente");
+ else if(saved&&!draftOk)toast("Anexos almacenados, pero no se pudo actualizar el borrador.");
+ else toast("No fue posible guardar los anexos seleccionados.");
+ return saved>0&&draftOk
 }
 document.getElementById("photoInput").addEventListener("change",e=>{addFiles(e.target.files);e.target.value=""});
 document.getElementById("fileInput").addEventListener("change",e=>{addFiles(e.target.files);e.target.value=""});
@@ -4593,11 +4636,12 @@ function persistCurrentDraft(){
  if(ok)saveJSON(DRAFT_KEY,copy);
  return ok;
 }
-function removeDraft(id){saveDrafts(getDrafts().filter(x=>x.id!==id))}
+function removeDraft(id){return saveDrafts(getDrafts().filter(x=>x.id!==id))}
 function archivePreviousRevision(previous){
- if(!previous?.id)return;
+ if(!previous?.id)return true;
  const history=getHistory(),list=Array.isArray(history[previous.id])?history[previous.id]:[];
- list.unshift(deepCopy(previous));history[previous.id]=list.slice(0,20);saveJSON(HISTORY_KEY,history);
+ list.unshift(deepCopy(previous));history[previous.id]=list.slice(0,20);
+ return saveJSON(HISTORY_KEY,history);
 }
 function draftFor(id){return getDrafts().find(x=>x.id===id)}
 function newestForRecord(record){
@@ -4614,15 +4658,21 @@ function upsertRecord(){
  const i=records.findIndex(x=>x.id===copy.id);
  if(i>=0){
   const comparable=x=>JSON.stringify({fields:x.fields||{},needs:x.needs||[],attachments:x.attachments||[],validation:x.validation||null});
-  if(comparable(records[i])!==comparable(copy))archivePreviousRevision(records[i]);
+  if(comparable(records[i])!==comparable(copy)&&!archivePreviousRevision(records[i])){
+   toast("No se pudo resguardar la versión anterior. El expediente NO fue sobrescrito.");
+   setStatus("Error de guardado");return false
+  }
   records[i]=copy
  }else records.unshift(copy);
  const ok=saveRecords(records);
  if(ok){
-  removeDraft(copy.id);saveJSON(DRAFT_KEY,copy);
+  const draftRemoved=removeDraft(copy.id);
+  const openSaved=saveJSON(DRAFT_KEY,copy);
+  if(!draftRemoved||!openSaved)console.warn("El expediente se guardó, pero quedó una copia adicional de borrador por seguridad.");
   if(!copy.simulation?.active)trackEvent("edan_guardado",{tipo:i>=0?"actualizacion":"nuevo"});
+  setStatus("Guardado local");
   toast(i>=0?"Expediente actualizado; versión anterior resguardada.":"EDAN guardado como nuevo expediente.");
- }
+ }else setStatus("Error de guardado");
  return ok;
 }
 document.getElementById("saveEdan")?.addEventListener("click",upsertRecord);
@@ -4662,7 +4712,10 @@ function saveProfileFromForm(){
   idRef:ref
  };
  if(!p.name||!p.agency){toast("Captura nombre y dependencia.");return}
- saveProfile(p);applyProfileToEdan(false);persistCurrentDraft();hydrateForm();closeModal("profileModal");toast("Perfil local guardado")
+ if(!saveProfile(p)){toast("No fue posible guardar el perfil local.");return}
+ applyProfileToEdan(false);
+ if(!persistCurrentDraft()){toast("Perfil guardado, pero el borrador no pudo actualizarse.");return}
+ hydrateForm();closeModal("profileModal");toast("Perfil local guardado")
 }
 
 
@@ -4724,6 +4777,7 @@ document.getElementById("newEdan").addEventListener("click",()=>resetEdan(true))
 document.getElementById("profileBtn")?.addEventListener("click",openProfile);
 document.getElementById("saveProfileBtn")?.addEventListener("click",saveProfileFromForm);
 document.getElementById("trashBtn")?.addEventListener("click",()=>{renderTrash();openModal("trashModal")});
+document.getElementById("verifyStorageBtn")?.addEventListener("click",()=>verifyStorageHealth(true));
 document.getElementById("backupAllBtn")?.addEventListener("click",backupAll);
 document.getElementById("importEdanBtn")?.addEventListener("click",()=>document.getElementById("importEdanFile").click());
 document.getElementById("restoreAllBtn")?.addEventListener("click",()=>document.getElementById("restoreAllFile").click());
@@ -4761,6 +4815,35 @@ function trashAttachmentIds(item){
  const ids=new Set(),add=x=>attachmentIdsFromEdan(x).forEach(id=>ids.add(id));
  add(item?.record);add(item?.draft);(item?.history||[]).forEach(add);
  return ids;
+}
+
+async function verifyStorageHealth(showMessage=false){
+ const box=document.getElementById("storageHealth");let localOK=false,idbOK=false,detail="";
+ const key="__edan_storage_health__"+Date.now();
+ try{
+  const value="OK-"+Math.random();
+  localStorage.setItem(key,value);localOK=localStorage.getItem(key)===value;localStorage.removeItem(key)
+ }catch(e){console.warn("localStorage health",e)}
+ try{
+  if(!db)await initDB();
+  const id=uid("__HEALTH__"),blob=new Blob(["EDAN"],{type:"text/plain"});
+  await dbPut({id,ownerId:"__health__",name:"health.txt",type:"text/plain",size:4,blob});
+  const check=await dbGet(id);idbOK=!!check?.blob;await dbDelete(id)
+ }catch(e){console.warn("IndexedDB health",e)}
+ try{
+  if(navigator.storage?.estimate){
+   const est=await navigator.storage.estimate();
+   if(est.quota)detail=` · ${formatBytes(est.usage||0)} usados de ${formatBytes(est.quota)} disponibles para el sitio`;
+  }
+ }catch(e){}
+ if(box){
+  box.className="storage-safety-note storage-check "+(localOK&&idbOK?"ok":localOK||idbOK?"warn":"error");
+  box.innerHTML=localOK&&idbOK
+   ?`<b>✓ Almacenamiento verificado:</b><span> datos y anexos aceptan escritura y lectura${detail}.</span>`
+   :`<b>⚠ Revisión necesaria:</b><span>${!localOK?" datos del navegador no disponibles.":""}${!idbOK?" anexos no disponibles.":""} Genera un respaldo antes de cerrar.</span>`;
+ }
+ if(showMessage)toast(localOK&&idbOK?"Almacenamiento local verificado correctamente.":"Se detectó un problema de almacenamiento.");
+ return localOK&&idbOK
 }
 
 function getTrash(){return loadJSON(TRASH_KEY,[])}
@@ -4843,18 +4926,25 @@ async function importSinglePayload(p){
   else{toast("Opción no reconocida");return false}
  }
  if(copyMode){const map=new Map();incoming.attachments=(incoming.attachments||[]).map(a=>{const nid=uid("F");map.set(a.id,nid);return {...a,id:nid}});for(const x of p.attachments||[]){if(map.has(x.meta?.id))x.__newid=map.get(x.meta.id)}}
- records.unshift(incoming);saveRecords(records);saveDrafts(drafts);
- for(const x of p.attachments||[]){const id=x.__newid||x.meta?.id;if(!id||!x.data)continue;try{await dbPut({id,ownerId:incoming.id,blob:base64ToBlob(x.data,x.meta?.type),name:x.meta?.name,type:x.meta?.type,size:x.meta?.size})}catch(e){}}
- renderSaved();trackEvent("edan_importado");toast("EDAN importado");return true
+ records.unshift(incoming);
+ if(!commitJSONBatch([[RECORDS_KEY,records],[DRAFTS_KEY,drafts]])){toast("No fue posible importar el EDAN. Los datos existentes se conservaron.");return false}
+ let attachmentFailures=0;
+ for(const x of p.attachments||[]){const id=x.__newid||x.meta?.id;if(!id||!x.data)continue;try{await dbPut({id,ownerId:incoming.id,blob:base64ToBlob(x.data,x.meta?.type),name:x.meta?.name,type:x.meta?.type,size:x.meta?.size})}catch(e){attachmentFailures++;console.warn(e)}}
+ updateProgress();renderSaved();trackEvent("edan_importado");
+ toast(attachmentFailures?`EDAN importado; ${attachmentFailures} anexo(s) no pudieron restaurarse.`:"EDAN importado");return true
 }
 async function backupAll(){
- saveAll(false);const files=await dbGetAll(),attachments=[];
- for(const f of files){try{attachments.push({id:f.id,ownerId:f.ownerId,name:f.name,type:f.type,size:f.size,data:await blobToBase64(f.blob)})}catch(e){console.warn("Anexo no respaldado",f.id,e)}}
- const payload={schema:"EDAN-TABASCO-BACKUP",version:33,exportedAt:new Date().toISOString(),appState:guideState,records:getRecords(),drafts:getDrafts(),history:getHistory(),trash:getTrash(),profile:getProfile(),attachments};
+ if(!saveAll(false)){toast("No se generó el respaldo: primero debe confirmarse el guardado local.");return false}
+ const files=await dbGetAll(),attachments=[];let attachmentFailures=0;
+ for(const f of files){try{attachments.push({id:f.id,ownerId:f.ownerId,name:f.name,type:f.type,size:f.size,data:await blobToBase64(f.blob)})}catch(e){attachmentFailures++;console.warn("Anexo no respaldado",f.id,e)}}
+ const payload={schema:"EDAN-TABASCO-BACKUP",version:34,exportedAt:new Date().toISOString(),appState:guideState,records:getRecords(),drafts:getDrafts(),history:getHistory(),trash:getTrash(),profile:getProfile(),attachments,integrity:{records:getRecords().length,drafts:getDrafts().length,trash:getTrash().length,attachments:attachments.length,attachmentFailures}};
  const text=JSON.stringify(payload);
  if(!text||text.length<30){toast("No fue posible construir el respaldo.");return false}
  downloadBlob(new Blob([text],{type:"application/json"}),`Respaldo_General_EDAN_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.json`);
- saveJSON(BACKUP_META_KEY,{last:new Date().toISOString()});updateStorageDashboard();trackEvent("respaldo_generado",{tipo:"completo"});toast("Respaldo general generado");return true
+ saveJSON(BACKUP_META_KEY,{last:new Date().toISOString(),attachmentFailures});
+ updateStorageDashboard();trackEvent("respaldo_generado",{tipo:"completo"});
+ toast(attachmentFailures?`Respaldo generado con advertencia: ${attachmentFailures} anexo(s) no pudieron incluirse.`:"Respaldo general generado y verificado");
+ return attachmentFailures===0
 }
 function cloneEdanForImport(obj,newId,attachmentMap){
  const c=deepCopy(obj);c.id=newId;c.created=c.created||new Date().toISOString();c.updated=new Date().toISOString();
@@ -4867,15 +4957,20 @@ async function restoreBackupPayload(p){
  if(!["REEMPLAZAR","COMBINAR"].includes(mode))return false;
 
  if(mode==="REEMPLAZAR"){
-  await backupAll();
-  const ok1=saveJSON(APP_KEY,p.appState||{completed:{},interactions:{}});
-  const ok2=saveRecords(p.records||[]);
-  const ok3=saveDrafts(p.drafts||[]);
-  const ok4=saveJSON(HISTORY_KEY,p.history||{});
-  const ok5=saveTrash(p.trash||[]);
-  const ok6=saveProfile(p.profile||{});
-  if(!ok1||!ok2||!ok3||!ok4||!ok5||!ok6){toast("No fue posible completar la restauración. Se generó un respaldo de seguridad de los datos previos.");return false}
-  for(const f of p.attachments||[]){try{await dbPut({id:f.id,ownerId:f.ownerId,blob:base64ToBlob(f.data,f.type),name:f.name,type:f.type,size:f.size})}catch(e){console.warn(e)}}
+  const safetyBackup=await backupAll();
+  if(!safetyBackup){toast("REEMPLAZAR cancelado: no se confirmó un respaldo completo de seguridad.");return false}
+  const committed=commitJSONBatch([
+   [APP_KEY,p.appState||{completed:{},interactions:{}}],
+   [RECORDS_KEY,p.records||[]],
+   [DRAFTS_KEY,p.drafts||[]],
+   [HISTORY_KEY,p.history||{}],
+   [TRASH_KEY,p.trash||[]],
+   [PROFILE_KEY,p.profile||{}]
+  ]);
+  if(!committed){toast("No fue posible completar la restauración. Los datos locales fueron revertidos.");return false}
+  let restoreAttachmentFailures=0;
+  for(const f of p.attachments||[]){try{await dbPut({id:f.id,ownerId:f.ownerId,blob:base64ToBlob(f.data,f.type),name:f.name,type:f.type,size:f.size})}catch(e){restoreAttachmentFailures++;console.warn(e)}}
+  if(restoreAttachmentFailures)toast(`Datos restaurados; ${restoreAttachmentFailures} anexo(s) no pudieron recuperarse.`);
  }else{
   let records=getRecords(),drafts=getDrafts(),history=getHistory(),trash=getTrash();
   const occupied=new Set([...records,...drafts].map(x=>x.id));
@@ -4913,7 +5008,8 @@ async function restoreBackupPayload(p){
    amap.forEach((v,k)=>attachmentMap.set(k,v));
   }
 
-  if(!saveRecords(records)||!saveDrafts(drafts)||!saveJSON(HISTORY_KEY,history)||!saveTrash(trash.slice(0,100))){toast("No fue posible completar la combinación. Los datos existentes se conservaron y el archivo de respaldo permanece intacto.");return false}
+  if(!commitJSONBatch([[RECORDS_KEY,records],[DRAFTS_KEY,drafts],[HISTORY_KEY,history],[TRASH_KEY,trash.slice(0,100)]])){toast("No fue posible completar la combinación. Los datos existentes fueron revertidos.");return false}
+  updateProgress();
   if(!getProfile().name&&p.profile)saveProfile(p.profile);
 
   for(const f of p.attachments||[]){
@@ -5386,6 +5482,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelect
  window.addEventListener("offline",()=>toast("Modo sin conexión activo · la guía y tus datos locales siguen disponibles"));
  window.addEventListener("online",()=>{toast("Conexión restablecida");loadAnalyticsOptional();warmOptionalLibraries();flushAnalyticsQueue()});
  updateStorageDashboard();
+ await verifyStorageHealth(false);
  trackPWAState();
  setTimeout(()=>{loadAnalyticsOptional();warmOptionalLibraries();flushAnalyticsQueue()},50);
 })();
