@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="47-guardado-respaldo-auditado">
+<meta name="application-version" content="48-qr-validacion-universal">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2876,6 +2876,19 @@ textarea{width:100%}
 .storage-safety-note.storage-check.warn{background:#fff7e8;border-left-color:#c88b2f;color:#705c32}
 .storage-safety-note.storage-check.error{background:#fdeeee;border-left-color:#a23e3e;color:#7c3c3c}
 
+
+/* V48 · QR universal: iPhone/Android abren la misma validación HTTPS */
+.qr-verify-screen{position:fixed;inset:0;z-index:10000;background:#f7f2e8;overflow:auto;padding:20px 14px 40px}
+.qr-verify-card{max-width:720px;margin:0 auto;background:#fff;border:1px solid #e3d7c0;border-radius:22px;box-shadow:0 14px 40px rgba(65,30,35,.12);overflow:hidden}
+.qr-verify-head{background:#7d1735;color:#fff;padding:20px}
+.qr-verify-head h1{font-size:22px;margin:0 0 5px}.qr-verify-head p{margin:0;font-size:13px;opacity:.92}
+.qr-verify-body{padding:18px}.qr-verify-status{padding:12px;border-radius:14px;background:#edf7f3;color:#315e52;font-weight:700;margin-bottom:14px}
+.qr-verify-grid{display:grid;grid-template-columns:150px 1fr;gap:9px 12px;font-size:14px}
+.qr-verify-grid b{color:#5f2134}.qr-verify-grid code{word-break:break-all;font-size:12px}
+.qr-verify-note{margin-top:16px;padding:12px;border-left:4px solid #c88b2f;background:#fff8e8;font-size:12.5px;line-height:1.45}
+.qr-verify-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:520px){.qr-verify-screen{padding:0;background:#fff}.qr-verify-card{border:0;border-radius:0;box-shadow:none;min-height:100vh}.qr-verify-grid{grid-template-columns:1fr;gap:3px}.qr-verify-grid b{margin-top:8px}}
+
 </style>
 </head>
 <body>
@@ -5189,23 +5202,59 @@ async function ensureValidation(rec){
  }
  return rec.validation;
 }
+function validationBaseURL(){
+ const u=new URL(location.href);
+ u.search="";u.hash="";
+ return u.href;
+}
 async function validationPayload(rec){
  const f=rec.fields||{},v=rec.validation||{};
  const safe=x=>String(x||"").replace(/\s+/g," ").trim();
  const idHash=await identificationReferenceHash(rec);
- return [
-  "EDAN TABASCO",
-  `ID=${safe(rec.id)}`,
-  `VALIDA=${safe(f.val_nombre)}`,
-  `DEPENDENCIA=${safe(f.val_dependencia)}`,
-  f.val_cargo?`CARGO=${safe(f.val_cargo)}`:"",
-  `IDTIPO=${safe(f.val_id_tipo)}`,
-  idHash?`IDREF_HASH=${idHash.slice(0,24)}`:"",
-  `FECHA=${safe(v.generatedAt)}`,
-  `MUNICIPIO=${safe(f.municipio)}`,
-  `EVENTO=${safe(f.evento)}`,
-  `SHA256=${safe(v.integrityHash)}`
- ].filter(Boolean).join("\n");
+ const u=new URL(validationBaseURL());
+ u.searchParams.set("validar","1");
+ u.searchParams.set("id",safe(rec.id));
+ u.searchParams.set("r",safe(f.val_nombre));
+ u.searchParams.set("d",safe(f.val_dependencia));
+ if(f.val_cargo)u.searchParams.set("c",safe(f.val_cargo));
+ u.searchParams.set("it",safe(f.val_id_tipo));
+ if(idHash)u.searchParams.set("ir",idHash.slice(0,24));
+ u.searchParams.set("f",safe(v.generatedAt));
+ u.searchParams.set("m",safe(f.municipio));
+ u.searchParams.set("e",safe(f.evento));
+ u.searchParams.set("h",safe(v.integrityHash));
+ return u.href;
+}
+function escVerify(v){return esc(String(v||""))}
+function renderQRValidationLanding(){
+ const q=new URLSearchParams(location.search);
+ if(q.get("validar")!=="1")return false;
+ const data={
+  id:q.get("id")||"—",responsable:q.get("r")||"No especificado",dependencia:q.get("d")||"No especificada",
+  cargo:q.get("c")||"No especificado",idtipo:q.get("it")||"ID",idref:q.get("ir")||"—",
+  fecha:q.get("f")||"",municipio:q.get("m")||"No especificado",evento:q.get("e")||"No especificado",hash:q.get("h")||"—"
+ };
+ let fecha=data.fecha;try{fecha=formatValidationDate(data.fecha)}catch(e){}
+ document.body.innerHTML=`<main class="qr-verify-screen"><section class="qr-verify-card">
+  <header class="qr-verify-head"><h1>Validación de reporte EDAN</h1><p>Guía Digital EDAN · IPCET Tabasco</p></header>
+  <div class="qr-verify-body">
+   <div class="qr-verify-status">✓ Código de validación EDAN reconocido</div>
+   <div class="qr-verify-grid">
+    <b>Expediente</b><code>${escVerify(data.id)}</code>
+    <b>Generado / validado por</b><span>${escVerify(data.responsable)}</span>
+    <b>Dependencia</b><span>${escVerify(data.dependencia)}</span>
+    <b>Cargo</b><span>${escVerify(data.cargo)}</span>
+    <b>Identificación</b><span>${escVerify(data.idtipo)} · referencia protegida ${escVerify(data.idref)}</span>
+    <b>Fecha / hora</b><span>${escVerify(fecha)}</span>
+    <b>Municipio</b><span>${escVerify(data.municipio)}</span>
+    <b>Evento</b><span>${escVerify(data.evento)}</span>
+    <b>Huella SHA-256</b><code>${escVerify(data.hash)}</code>
+   </div>
+   <div class="qr-verify-note"><b>Alcance de la validación.</b> Esta pantalla presenta los datos mínimos incorporados al QR y la huella de integridad del reporte. El QR no equivale por sí solo a una firma electrónica certificada ni consulta una base de datos pública del expediente.</div>
+   <div class="qr-verify-actions"><button class="btn primary" id="closeQrValidation">Abrir Guía Digital EDAN</button></div>
+  </div></section></main>`;
+ document.getElementById("closeQrValidation")?.addEventListener("click",()=>{const u=new URL(location.href);u.search="";location.href=u.href});
+ return true;
 }
 async function makeQRDataURL(text,size=420){
  if(!(await ensureQRCodeLibrary()))throw new Error("El generador QR todavía no está disponible en la caché de este dispositivo. Conecta una vez a internet para almacenarlo; el resto de la guía funciona sin conexión.");
@@ -5335,7 +5384,7 @@ async function buildPDF(rec){
  pair("ID del expediente",rec.id);
  pair("Código de integridad SHA-256",validation.integrityHash);
  if(qrData){
-  line("El QR identifica el expediente y su código de integridad; no equivale por sí solo a una firma electrónica certificada.",7.5,false,[100,92,70]);
+  line("El QR abre la validación del reporte EDAN y muestra su código de integridad; no equivale por sí solo a una firma electrónica certificada.",7.5,false,[100,92,70]);
  }else{
   line("Código de integridad generado correctamente. El QR no estuvo disponible en este dispositivo al momento de crear el PDF.",7.5,false,[100,92,70]);
  }
@@ -5465,6 +5514,7 @@ document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",
 document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal.open").forEach(m=>closeModal(m.id))});
 
 (async function init(){
+ if(renderQRValidationLanding())return;
  try{await initDB()}catch(e){console.warn(e)}
  if(edan?.id){
   applyProfileToEdan(false);

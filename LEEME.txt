@@ -72,3 +72,11 @@ V47 · Auditoría de guardado y respaldo:
 - Restauración combinada usa escritura agrupada con reversión.
 - Centro de almacenamiento incorpora prueba real de localStorage + IndexedDB.
 - No se modificaron contenido EDAN ni actividades.
+
+V48 · QR de validación universal:
+- El QR ya no contiene texto plano: codifica una URL de la propia Guía Digital EDAN.
+- iPhone y Android abren la misma pantalla institucional de validación.
+- La pantalla muestra expediente, responsable, dependencia, cargo, referencia protegida, fecha/hora, municipio, evento y SHA-256.
+- No expone la identificación capturada; conserva una referencia hash protegida.
+- No depende de Google ni de un buscador.
+- Conserva guardado, respaldo, historial, papelera, IndexedDB, PDF y actividades de v47.
