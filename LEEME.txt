@@ -49,3 +49,12 @@ V45:
 - Incluye reglas específicas para <=700, <=390 y <=340 px.
 - No modifica JavaScript, progreso, almacenamiento, imágenes, expedientes, PDF, QR ni Analytics.
 - Cache PWA actualizada a v45.
+
+V46:
+- Diagnóstico móvil: el PDF quedaba bloqueado cuando fallaba la librería QR; ahora PDF y QR no están acoplados.
+- Las librerías PDF/QR reintentan automáticamente con tres CDN y un fallo transitorio ya no queda memorizado.
+- El PDF puede generarse aunque el QR no esté disponible; conserva SHA-256 e informa la ausencia del QR.
+- Descarga Blob reforzada para Android/WebView: enlace insertado en DOM y revocación diferida 60 s.
+- VALIDACIÓN DEL DOCUMENTO se mueve al inicio del reporte, antes de Identificación.
+- Formulario EDAN forzado a una columna hasta 820 px; acciones se envuelven para evitar recortes.
+- Cache PWA actualizada a v46.
