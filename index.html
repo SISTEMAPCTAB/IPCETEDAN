@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="48-qr-validacion-universal">
+<meta name="application-version" content="49-qr-reporte-corregido">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -3679,13 +3679,48 @@ async function injectOptionalScript(name,urls){
  try{return await optionalLibraryPromises[name]}
  catch(e){delete optionalLibraryPromises[name];throw e}
 }
+async function loadOptionalScriptFromCache(name,urls){
+ if(!("caches" in window))return false;
+ const candidates=Array.isArray(urls)?urls:[urls];
+ for(const url of candidates){
+  try{
+   const response=await caches.match(url);
+   if(!response)continue;
+   const code=await response.text();
+   if(!code||code.length<100)continue;
+   await new Promise((resolve,reject)=>{
+    const blob=new Blob([code],{type:"text/javascript"});
+    const objectURL=URL.createObjectURL(blob);
+    const s=document.createElement("script");
+    s.async=false;s.src=objectURL;s.dataset.runtimeLibCache=name;
+    s.onload=()=>{URL.revokeObjectURL(objectURL);resolve(true)};
+    s.onerror=()=>{URL.revokeObjectURL(objectURL);s.remove();reject(new Error(`${name} no pudo cargarse desde caché`))};
+    document.head.appendChild(s);
+   });
+   return true;
+  }catch(e){console.warn(`${name}: caché no utilizable`,e)}
+ }
+ return false;
+}
 async function ensureJsPDFLibrary(){
  if(window.jspdf?.jsPDF)return true;
- try{await injectOptionalScript("jspdf",OPTIONAL_LIBRARY_URLS.jspdf);return !!window.jspdf?.jsPDF}catch(e){console.warn(e);return false}
+ try{
+  if(await loadOptionalScriptFromCache("jspdf",OPTIONAL_LIBRARY_URLS.jspdf)){
+   if(window.jspdf?.jsPDF)return true;
+  }
+  await injectOptionalScript("jspdf",OPTIONAL_LIBRARY_URLS.jspdf);
+  return !!window.jspdf?.jsPDF
+ }catch(e){console.warn(e);return false}
 }
 async function ensureQRCodeLibrary(){
  if(typeof window.QRCode!=="undefined")return true;
- try{await injectOptionalScript("qrcode",OPTIONAL_LIBRARY_URLS.qrcode);return typeof window.QRCode!=="undefined"}catch(e){console.warn(e);return false}
+ try{
+  if(await loadOptionalScriptFromCache("qrcode",OPTIONAL_LIBRARY_URLS.qrcode)){
+   if(typeof window.QRCode!=="undefined")return true;
+  }
+  await injectOptionalScript("qrcode",OPTIONAL_LIBRARY_URLS.qrcode);
+  return typeof window.QRCode!=="undefined"
+ }catch(e){console.warn(e);return false}
 }
 async function warmOptionalLibraries(){
  if(!navigator.onLine)return;
@@ -5257,19 +5292,35 @@ function renderQRValidationLanding(){
  return true;
 }
 async function makeQRDataURL(text,size=420){
- if(!(await ensureQRCodeLibrary()))throw new Error("El generador QR todavía no está disponible en la caché de este dispositivo. Conecta una vez a internet para almacenarlo; el resto de la guía funciona sin conexión.");
- const holder=document.createElement("div");
- holder.style.position="fixed";holder.style.left="-9999px";holder.style.top="0";
- document.body.appendChild(holder);
- try{
-  new QRCode(holder,{text,width:size,height:size,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
-  await new Promise(r=>setTimeout(r,80));
-  const canvas=holder.querySelector("canvas");
-  if(canvas)return canvas.toDataURL("image/png");
-  const img=holder.querySelector("img");
-  if(img?.src)return img.src;
-  throw new Error("No se pudo renderizar el QR");
- }finally{holder.remove()}
+ if(!(await ensureQRCodeLibrary()))throw new Error("Generador QR no disponible");
+ const render=async()=>{
+  const holder=document.createElement("div");
+  holder.style.position="fixed";holder.style.left="-9999px";holder.style.top="0";
+  document.body.appendChild(holder);
+  try{
+   new QRCode(holder,{text,width:size,height:size,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+   for(let i=0;i<8;i++){
+    await new Promise(r=>setTimeout(r,60));
+    const canvas=holder.querySelector("canvas");
+    if(canvas&&canvas.width>0&&canvas.height>0)return canvas.toDataURL("image/png");
+    const img=holder.querySelector("img");
+    if(img?.src&&img.src.startsWith("data:image/"))return img.src;
+   }
+   throw new Error("No se pudo renderizar el QR");
+  }finally{holder.remove()}
+ };
+ try{return await render()}
+ catch(first){
+  console.warn("Primer intento QR falló; reintentando desde caché/red.",first);
+  try{
+   delete optionalLibraryPromises.qrcode;
+   await loadOptionalScriptFromCache("qrcode-retry",OPTIONAL_LIBRARY_URLS.qrcode);
+   return await render()
+  }catch(second){
+   console.warn("Segundo intento QR falló.",second);
+   throw second
+  }
+ }
 }
 async function prepareValidation(rec=edan){
  if(rec===edan&&!validateIdentity())return null;
@@ -5287,19 +5338,20 @@ async function prepareValidation(rec=edan){
   return null;
  }
  const validation=await ensureValidation(rec);
- let qrData=null,qrAvailable=false;
+ let qrData=null,qrAvailable=false,qrError="";
  try{
   qrData=await makeQRDataURL(await validationPayload(rec));
   qrAvailable=!!qrData;
  }catch(e){
-  console.warn("QR no disponible; el PDF puede continuar sin QR.",e);
+  qrError=String(e?.message||e||"Error QR");
+  console.error("QR no disponible después de reintentos.",e);
  }
- return {validation,qrData,qrAvailable};
+ return {validation,qrData,qrAvailable,qrError};
 }
 async function showValidationQR(rec=edan){
  const prepared=await prepareValidation(rec);if(!prepared)return;
  if(!prepared.qrAvailable||!prepared.qrData){
-  toast("No fue posible generar el QR. Conecta el dispositivo a internet y vuelve a intentarlo.");
+  toast("No fue posible generar el QR. Cierra y vuelve a abrir la guía con conexión para actualizar la caché QR.");
   return;
  }
  if(rec===edan){upsertRecord()}

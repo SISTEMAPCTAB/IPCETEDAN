@@ -80,3 +80,13 @@ V48 · QR de validación universal:
 - No expone la identificación capturada; conserva una referencia hash protegida.
 - No depende de Google ni de un buscador.
 - Conserva guardado, respaldo, historial, papelera, IndexedDB, PDF y actividades de v47.
+
+V49 · Corrección QR dentro del reporte:
+- Se confirma el problema observado en v48: el PDF podía generar SHA-256 pero quedar sin QR.
+- El cargador QR ahora intenta primero recuperar QRCode.js directamente desde CacheStorage.
+- Si la carga normal falla, realiza un segundo intento desde caché.
+- El renderizado espera de forma progresiva canvas/imagen antes de declararlo fallido.
+- El Service Worker migra jsPDF y QRCode.js desde la caché de la versión anterior antes de eliminarla.
+- De esta forma una actualización PWA ya no debe perder la librería QR previamente almacenada.
+- Se conserva el QR como URL HTTPS de validación universal de v48.
+- Se conservan íntegros guardado, respaldo, historial, papelera, IndexedDB, PDF, actividades y Analytics.
