@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="49-qr-reporte-corregido">
+<meta name="application-version" content="50-marco-normativo">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2889,6 +2889,19 @@ textarea{width:100%}
 .qr-verify-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 @media(max-width:520px){.qr-verify-screen{padding:0;background:#fff}.qr-verify-card{border:0;border-radius:0;box-shadow:none;min-height:100vh}.qr-verify-grid{grid-template-columns:1fr;gap:3px}.qr-verify-grid b{margin-top:8px}}
 
+
+/* V50 · Marco normativo y metodología EDAN */
+.action-card.framework{border-color:#d7b66d;background:linear-gradient(135deg,#fffaf0,#fff)}
+.primary-home-card.framework{border-top:4px solid #c88b2f}
+.framework-head{align-items:flex-start}.framework-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.framework-wide{grid-column:1/-1}
+.framework-kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:#7d1735;margin-bottom:5px}
+.framework-note{margin-top:14px;padding:13px 15px;border-left:4px solid #c88b2f;background:#fff8e8;border-radius:10px;line-height:1.5}.framework-note.neutral{background:#f7f2e8;border-left-color:#0c5e5e}
+.eight-hours{display:flex;gap:14px;align-items:center;margin-top:15px;padding:14px;background:#f7f2e8;border-radius:14px}.eight-hours>b{font-size:32px;color:#7d1735;white-space:nowrap}.eight-hours span{line-height:1.45}
+.framework-steps{display:grid;gap:9px;margin-top:12px}.framework-steps span{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid #eadfca;border-radius:11px}.framework-steps b{display:grid;place-items:center;min-width:25px;height:25px;border-radius:50%;background:#7d1735;color:white}
+.framework-flow{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:15px;padding:14px;background:#f7f2e8;border-radius:14px}.framework-flow span{padding:8px 10px;background:#fff;border:1px solid #e4d5bb;border-radius:10px;font-weight:800;font-size:12px}.framework-flow i{font-style:normal;color:#c88b2f;font-weight:900}
+.framework-warning{border-left:5px solid #7d1735}.framework-refs{padding-left:20px;line-height:1.55}.framework-refs li{margin:9px 0}
+@media(max-width:760px){.framework-grid{grid-template-columns:1fr}.framework-wide{grid-column:auto}.framework-flow{flex-direction:column;align-items:stretch;text-align:center}.framework-flow i{transform:rotate(90deg)}.eight-hours{align-items:flex-start}.primary-actions{grid-template-columns:1fr!important}}
+
 </style>
 </head>
 <body>
@@ -2929,6 +2942,11 @@ textarea{width:100%}
       <span><b>Entrar a la Guía</b><span>6 módulos breves con actividades y avance guardado.</span></span>
       <span class="action-arrow">›</span>
      </button>
+     <button class="action-card framework" data-screen="screen-framework">
+      <span class="icon">⚖️</span>
+      <span><b>Marco normativo y metodología EDAN</b><span>Alineación SINAPROC/CNPC, alcance y responsabilidades.</span></span>
+      <span class="action-arrow">›</span>
+     </button>
      <button class="action-card edan" data-screen="screen-edan">
       <span class="icon">📝</span>
       <span><b>Hacer EDAN</b><span>Captura por pasos, anexos, guardado y generación de PDF.</span></span>
@@ -2962,6 +2980,14 @@ textarea{width:100%}
      <h3>Aprender EDAN</h3>
      <p>6 módulos breves con casos, ejercicios y actividades interactivas para comprender el proceso.</p>
      <button class="btn home-cta" data-screen="screen-guide"><span>Entrar a la Guía</span><span>→</span></button>
+    </article>
+
+    <article class="primary-home-card framework">
+     <div class="home-icon">⚖️</div>
+     <div class="eyebrow">Referencia institucional</div>
+     <h3>Marco normativo y metodología EDAN</h3>
+     <p>Consulta el sustento SINAPROC/CNPC, el alcance de la evaluación inicial y las responsabilidades institucionales.</p>
+     <button class="btn home-cta" data-screen="screen-framework"><span>Consultar marco</span><span>→</span></button>
     </article>
 
     <article class="primary-home-card edan">
@@ -3006,6 +3032,48 @@ textarea{width:100%}
   </div>
  </section>
  <div class="home-clearance" aria-hidden="true"></div>
+</section>
+
+<section class="screen" id="screen-framework">
+ <div class="section-head framework-head">
+  <button class="btn secondary sm" type="button" data-screen="screen-home">← Inicio</button>
+  <div><div class="eyebrow">REFERENCIA INSTITUCIONAL</div><h1>Marco normativo y metodología EDAN</h1><p>Base operativa para la Evaluación de Daños y Análisis de Necesidades.</p></div>
+ </div>
+ <div class="framework-grid">
+  <article class="card framework-wide">
+   <h2>Alineación con el Sistema Nacional de Protección Civil</h2>
+   <p>La Guía Digital EDAN · Tabasco es una herramienta operativa para apoyar la <b>evaluación inicial de daños y necesidades</b>, organizar la información levantada y facilitar la priorización de acciones. Su metodología toma como referencia el <b>Manual de Organización y Operación del Sistema Nacional de Protección Civil</b> y el enfoque de Evaluación de Daños y Análisis de Necesidades promovido por la Coordinación Nacional de Protección Civil.</p>
+   <div class="framework-note"><b>Alcance institucional.</b> Esta guía apoya el levantamiento, integración y consolidación de información. No se presenta como un formato homologado, certificado o autorizado por la CNPC y no sustituye las atribuciones, formatos o procedimientos que determine la autoridad competente.</div>
+  </article>
+  <article class="card">
+   <div class="framework-kicker">EVALUACIÓN INICIAL</div><h2>Primeras horas</h2>
+   <p>El Manual del SINAPROC establece que la evaluación inicial busca conocer las afectaciones sobre la población, sus bienes, infraestructura y entorno, y determinar las necesidades urgentes.</p>
+   <div class="eight-hours"><b>8 h</b><span>Es recomendable realizarla durante las primeras ocho horas posteriores al fenómeno, <strong>siempre que las condiciones lo permitan y no se ponga en riesgo al personal evaluador.</strong></span></div>
+  </article>
+  <article class="card">
+   <div class="framework-kicker">PROPÓSITO</div><h2>De la observación a la decisión</h2>
+   <div class="framework-steps"><span><b>1</b> Observar daños, afectaciones y riesgos</span><span><b>2</b> Verificar calidad y fuente de datos</span><span><b>3</b> Priorizar necesidades y acciones</span></div>
+  </article>
+  <article class="card framework-wide">
+   <div class="framework-kicker">COORDINACIÓN</div><h2>Responsabilidades y flujo de información</h2>
+   <p>La evaluación inicial corresponde a los cuerpos y autoridades de Protección Civil estatal y/o municipal. Las dependencias, entidades e instituciones competentes realizan el reconocimiento y la evaluación especializada de los daños en los sectores a su cargo.</p>
+   <div class="framework-flow"><span>Zona afectada</span><i>→</i><span>Brigada EDAN</span><i>→</i><span>UMPC</span><i>→</i><span>Información sectorial</span><i>→</i><span>IPCET</span><i>→</i><span>Prioridades y decisiones</span></div>
+  </article>
+  <article class="card framework-wide framework-warning">
+   <h2>EDAN ≠ dictamen especializado</h2>
+   <p>El EDAN identifica y documenta daños, afectaciones, riesgos y necesidades para apoyar la toma de decisiones. Cuando un daño requiere valoración técnica especializada —por ejemplo estructural, sanitaria, eléctrica, hidráulica o de infraestructura— corresponde a la institución o área técnicamente competente realizar la evaluación o dictamen respectivo.</p>
+  </article>
+  <article class="card framework-wide">
+   <div class="framework-kicker">REFERENCIAS</div><h2>Normativas y metodológicas</h2>
+   <ul class="framework-refs">
+    <li><b>Manual de Organización y Operación del Sistema Nacional de Protección Civil.</b> Acuerdo publicado en el Diario Oficial de la Federación el 13 de julio de 2018; apartado “Evaluación de Daños”.</li>
+    <li><b>Coordinación Nacional de Protección Civil.</b> La EDAN se contempla como herramienta para impulsar a los gobiernos locales a evaluar la magnitud de los daños y las necesidades de la población afectada.</li>
+    <li><b>Ley General de Protección Civil</b>, dentro del marco de atribuciones y coordinación del Sistema Nacional de Protección Civil.</li>
+    <li><b>Ley de Protección Civil del Estado de Tabasco</b> y disposiciones estatales aplicables.</li>
+   </ul>
+   <div class="framework-note neutral"><b>Consulta operativa sin conexión.</b> Este contenido queda integrado en la aplicación. En operación real prevalecen las disposiciones oficiales, protocolos y formatos vigentes que determine la autoridad competente.</div>
+  </article>
+ </div>
 </section>
 
 <section class="screen" id="screen-guide">
@@ -3632,7 +3700,7 @@ function trackOnceSession(key,eventName,params={}){
  }catch(e){trackEvent(eventName,params);return true}
 }
 function analyticsScreenName(id){
- return ({"screen-home":"inicio","screen-guide":"guia","screen-module":"modulo","screen-simulation":"simulacion","screen-edan":"edan","screen-saved":"almacenamiento"})[id]||"otra";
+ return ({"screen-home":"inicio","screen-guide":"guia","screen-module":"modulo","screen-simulation":"simulacion","screen-edan":"edan","screen-saved":"almacenamiento","screen-framework":"marco_normativo"})[id]||"otra";
 }
 function isStandalonePWA(){return window.matchMedia?.("(display-mode: standalone)").matches||navigator.standalone===true}
 function trackPWAState(){

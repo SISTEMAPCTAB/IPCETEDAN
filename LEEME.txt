@@ -90,3 +90,8 @@ V49 · Corrección QR dentro del reporte:
 - De esta forma una actualización PWA ya no debe perder la librería QR previamente almacenada.
 - Se conserva el QR como URL HTTPS de validación universal de v48.
 - Se conservan íntegros guardado, respaldo, historial, papelera, IndexedDB, PDF, actividades y Analytics.
+
+V50 · Marco normativo y metodología EDAN:
+- Nuevo acceso en Inicio entre la Guía y la ruta operativa/capacitación.
+- Pantalla interna offline con referencia SINAPROC/CNPC, primeras 8 horas, responsabilidades, EDAN ≠ dictamen y referencias.
+- No modifica captura, almacenamiento, respaldo, historial, papelera, anexos, PDF, QR, actividades ni analítica.
