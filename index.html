@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="50-marco-normativo">
+<meta name="application-version" content="51-capacitacion-restaurada">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2902,6 +2902,11 @@ textarea{width:100%}
 .framework-warning{border-left:5px solid #7d1735}.framework-refs{padding-left:20px;line-height:1.55}.framework-refs li{margin:9px 0}
 @media(max-width:760px){.framework-grid{grid-template-columns:1fr}.framework-wide{grid-column:auto}.framework-flow{flex-direction:column;align-items:stretch;text-align:center}.framework-flow i{transform:rotate(90deg)}.eight-hours{align-items:flex-start}.primary-actions{grid-template-columns:1fr!important}}
 
+
+/* V51 · Restaura acceso visible al Modo de Capacitación */
+.action-card.training{border-color:#d8c2cc;background:linear-gradient(135deg,#fff,#fff8fb)}
+.action-card.training .icon{background:#f5e6ed;color:#7d1735}
+
 </style>
 </head>
 <body>
@@ -2945,6 +2950,11 @@ textarea{width:100%}
      <button class="action-card framework" data-screen="screen-framework">
       <span class="icon">⚖️</span>
       <span><b>Marco normativo y metodología EDAN</b><span>Alineación SINAPROC/CNPC, alcance y responsabilidades.</span></span>
+      <span class="action-arrow">›</span>
+     </button>
+     <button class="action-card training" data-screen="screen-guide">
+      <span class="icon">🎓</span>
+      <span><b>Modo de Capacitación</b><span>6 módulos interactivos, actividades y avance guardado.</span></span>
       <span class="action-arrow">›</span>
      </button>
      <button class="action-card edan" data-screen="screen-edan">

@@ -95,3 +95,9 @@ V50 · Marco normativo y metodología EDAN:
 - Nuevo acceso en Inicio entre la Guía y la ruta operativa/capacitación.
 - Pantalla interna offline con referencia SINAPROC/CNPC, primeras 8 horas, responsabilidades, EDAN ≠ dictamen y referencias.
 - No modifica captura, almacenamiento, respaldo, historial, papelera, anexos, PDF, QR, actividades ni analítica.
+
+V51 · Acceso Modo de Capacitación restaurado:
+- Se restaura en la portada el botón visible “Modo de Capacitación”.
+- Ubicación: Entrar a la Guía → Marco normativo y metodología EDAN → Modo de Capacitación → Hacer EDAN.
+- El botón reutiliza la ruta de capacitación existente (screen-guide); no duplica módulos ni progreso.
+- No se modifica captura EDAN, almacenamiento, respaldo, historial, papelera, IndexedDB, PDF, QR, marco normativo ni Analytics.
