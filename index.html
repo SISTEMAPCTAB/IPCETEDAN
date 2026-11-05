@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="51-capacitacion-restaurada">
+<meta name="application-version" content="52-observaciones-edan">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -997,8 +997,7 @@ fieldset{border:1px solid var(--line);border-radius:15px;margin:12px 0;padding:1
 .course-complete-copy .eyebrow{
   display:block;
   font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.8px;
+  text-transform:uppercase;  letter-spacing:.8px;
   font-weight:900;
   color:#e9c984;
   margin-bottom:4px;
@@ -1997,8 +1996,7 @@ fieldset{border:1px solid var(--line);border-radius:15px;margin:12px 0;padding:1
   object-fit:contain;
   background:#fff;
 }
-.module-visual.visual-hero{
-  border-radius:18px;
+.module-visual.visual-hero{  border-radius:18px;
   border:1px solid #e1d5d0;
   box-shadow:0 8px 22px rgba(61,43,49,.08);
 }
@@ -2907,6 +2905,21 @@ textarea{width:100%}
 .action-card.training{border-color:#d8c2cc;background:linear-gradient(135deg,#fff,#fff8fb)}
 .action-card.training .icon{background:#f5e6ed;color:#7d1735}
 
+
+/* v52 · observaciones a EDAN: cortes, sectores productivos y brecha de necesidades */
+.productive-details{margin:12px 0;border:1px solid #d8c8ad;border-radius:14px;background:#fcfaf6;overflow:hidden}
+.productive-details>summary{cursor:pointer;padding:14px;font-weight:850;color:#6e2039;line-height:1.45}
+.productive-details>p{padding:0 14px;font-size:13px;line-height:1.55;color:#555}
+.productive-sector{padding:0 14px 14px}.productive-sector h4{margin:12px 0 8px;color:#6e2039;font-size:15px}
+.productive-rows{display:grid;gap:8px}.productive-row{display:grid;grid-template-columns:minmax(115px,.7fr) minmax(125px,.7fr) minmax(150px,1.2fr);align-items:end;gap:10px;padding:11px;border:1px solid #e7dfd3;border-radius:11px;background:#fff}
+.productive-row>b{align-self:center;color:#42343b}.productive-row .field{min-width:0}
+.need-row .need-link{grid-column:1/-1;width:100%;min-width:0;margin:0;border-top:1px solid #eadedc;padding-top:7px}
+.need-link>summary{cursor:pointer;color:#7d1735;font-weight:750;font-size:12px;padding:8px 0}
+.need-link-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:8px 0}
+.need-link-grid .field{min-width:0}
+@media(max-width:700px){.productive-row{grid-template-columns:1fr 1fr}.productive-row>b{grid-column:1/-1}.need-link-grid{grid-template-columns:1fr}}
+@media(max-width:390px){.productive-row{grid-template-columns:1fr}.productive-row>b{grid-column:auto}}
+
 </style>
 </head>
 <body>
@@ -2982,7 +2995,6 @@ textarea{width:100%}
     <div><h2>Comienza aquí</h2><p>Elige entre aprender el método o realizar un levantamiento.</p></div>
     <span class="home-chip">EDAN · TABASCO</span>
    </div>
-
    <div class="primary-actions">
     <article class="primary-home-card guide">
      <div class="home-icon">🎓</div>
@@ -3224,12 +3236,15 @@ textarea{width:100%}
    <form id="edanForm" onsubmit="return false;">
     <div class="step-pane active" data-step="1">
      <div class="step-head"><span>Paso 1 de 7</span><h2>Identificación del evento</h2><p>Ubica el levantamiento en tiempo, territorio y contexto.</p></div>
-     <details class="step-help"><summary>❓ Ayuda para este paso</summary><div><b>Objetivo:</b> dejar claro qué ocurrió, dónde y a qué hora corresponde la información.<br><b>Revisa:</b> evento, municipio, localidad y hora de corte. Usa “No evaluado” si todavía no conoces la condición de acceso.<br><b>Evita:</b> descripciones generales sin ubicación ni hora.</div></details>
+     <details class="step-help"><summary>❓ Ayuda para este paso</summary><div><b>Objetivo:</b> dejar claro qué ocurrió, dónde y a qué hora corresponde la información.<br><b>Revisa:</b> evento, municipio, localidad y hora de corte. Usa “No evaluado” si todavía no conoces la condición de acceso.<br><b>Etapa:</b> selecciona preliminar/inicial para el primer panorama, complementaria para actualizaciones y específica para información sectorial especializada.<br><b>Evita:</b> descripciones generales sin ubicación ni hora.</div></details>
      <figure class="module-visual visual-form-intro" data-visual="form_step1"><img src="assets/form_step1.jpg" width="1440" height="810" loading="eager" decoding="async" alt="Infografía Levanta tu EDAN paso a paso: ubica, captura datos, toma evidencias, revisa y genera el reporte."></figure>
      <div class="form-grid">
       <div class="field full"><label>Nombre del evento / operativo *</label><input name="evento" type="text" placeholder="Ej. Inundación por lluvias intensas"></div>
       <div class="field"><label>Fenómeno perturbador</label><select name="fenomeno"><option>Hidrometeorológico</option><option>Geológico</option><option>Químico-tecnológico</option><option>Sanitario-ecológico</option><option>Socio-organizativo</option><option>Astronómico</option><option>Otro</option></select></div>
       <div class="field"><label>Fecha y hora del corte</label><input name="fecha" type="datetime-local"></div>
+      <div class="field"><label>Etapa de la evaluación / tipo de corte</label><select name="tipo_corte"><option value="Preliminar / inicial">Preliminar / inicial</option><option value="Complementaria / actualización">Complementaria / actualización</option><option value="Específica / sectorial">Específica / sectorial</option></select></div>
+      <div class="field"><label>ID del corte o expediente anterior (si existe)</label><input name="corte_anterior" type="text" placeholder="ID anterior o referencia de reporte"></div>
+      <div class="field full"><label>¿Qué cambió desde el corte anterior?</label><textarea name="corte_cambios" placeholder="Nuevas zonas evaluadas, datos confirmados, daños, recursos, necesidades atendidas o pendientes. En el primer corte puede quedar vacío."></textarea></div>
       <div class="field"><label>Municipio *</label><select name="municipio" id="municipioSelect"></select></div>
       <div class="field"><label>Localidad / colonia / sector *</label><input name="localidad" type="text"></div>
       <div class="field"><label>Equipo o institución evaluadora</label><input name="equipo" type="text"></div>
@@ -3308,21 +3323,27 @@ textarea{width:100%}
        <div class="field"><label>Carreteras / caminos / puentes</label><textarea name="i_vial" placeholder="Sitio, tipo de daño y condición de paso."></textarea></div>
        <div class="field"><label>Salud / educación / edificios públicos</label><textarea name="i_publica"></textarea></div>
        <div class="field"><label>Infraestructura hidráulica / drenaje</label><textarea name="i_hidraulica"></textarea></div>
-       <div class="field"><label>Infraestructura productiva / otros</label><textarea name="i_otros"></textarea></div>
+       <div class="field"><label>Observaciones productivas adicionales / otros (campo anterior)</label><textarea name="i_otros"></textarea></div>
       </div>
      </fieldset>
+     <details class="productive-details"><summary>🏭 Infraestructura productiva por sector (tipo, ubicación y afectación)</summary>
+      <p>Evaluación preliminar: registra únicamente <b>actividad, ubicación y nivel general de afectación</b>. No se requieren montos de pérdidas ni cuantificación técnica; corresponde a las instituciones sectoriales realizarla en etapas posteriores.</p>
+      <div class="productive-sector"><h4>Sector primario</h4><div class="productive-rows"><div class="productive-row"><b>Agricultura</b><div class="field"><label>Nivel general</label><select name="prod_agricultura_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_agricultura_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Ganadería</b><div class="field"><label>Nivel general</label><select name="prod_ganaderia_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_ganaderia_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Pesca</b><div class="field"><label>Nivel general</label><select name="prod_pesca_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_pesca_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Acuicultura</b><div class="field"><label>Nivel general</label><select name="prod_acuicultura_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_acuicultura_ubicacion" placeholder="Localidad, instalación o tramo"></div></div></div></div>
+      <div class="productive-sector"><h4>Sector secundario</h4><div class="productive-rows"><div class="productive-row"><b>Industrias</b><div class="field"><label>Nivel general</label><select name="prod_industrias_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_industrias_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Centros de transformación</b><div class="field"><label>Nivel general</label><select name="prod_transformacion_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_transformacion_ubicacion" placeholder="Localidad, instalación o tramo"></div></div></div></div>
+      <div class="productive-sector"><h4>Sector terciario</h4><div class="productive-rows"><div class="productive-row"><b>Comercio</b><div class="field"><label>Nivel general</label><select name="prod_comercio_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_comercio_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Transporte</b><div class="field"><label>Nivel general</label><select name="prod_transporte_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_transporte_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Turismo</b><div class="field"><label>Nivel general</label><select name="prod_turismo_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_turismo_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Servicios financieros</b><div class="field"><label>Nivel general</label><select name="prod_financieros_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_financieros_ubicacion" placeholder="Localidad, instalación o tramo"></div></div><div class="productive-row"><b>Otros servicios</b><div class="field"><label>Nivel general</label><select name="prod_servicios_nivel"><option>Sin evaluar</option><option>Sin afectación</option><option>Leve</option><option>Moderada</option><option>Severa</option><option>Por verificar</option></select></div><div class="field"><label>Ubicación / referencia</label><input type="text" name="prod_servicios_ubicacion" placeholder="Localidad, instalación o tramo"></div></div></div></div>
+     </details>
      <div class="field"><label>Riesgos activos o secundarios</label><textarea name="riesgos_activos" placeholder="Corriente, derrumbe, cableado energizado, estructuras inestables, contaminación, fugas, incendio, etc."></textarea></div>
     </div>
 
     <div class="step-pane" data-step="5">
      <div class="step-head"><span>Paso 5 de 7</span><h2>Análisis de necesidades</h2><p>Relaciona la afectación con la acción o recurso que se requiere.</p></div>
-     <details class="step-help"><summary>❓ Ayuda para este paso</summary><div><b>Objetivo:</b> convertir daños y consecuencias en acciones concretas.<br><b>P1:</b> vida y seguridad. <b>P2:</b> estabilización. <b>P3:</b> recuperación inicial.<br><b>Una necesidad útil indica:</b> qué se requiere, para quién, dónde, cantidad o referencia y urgencia.</div></details>
+     <details class="step-help"><summary>❓ Ayuda para este paso</summary><div><b>Objetivo:</b> convertir daños y consecuencias en acciones concretas.<br><b>P1:</b> vida y seguridad. <b>P2:</b> estabilización. <b>P3:</b> recuperación inicial.<br><b>Una necesidad útil indica:</b> qué se requiere, para quién, dónde, cantidad o referencia y urgencia.<br><b>Brecha:</b> vincula cada necesidad con el daño observado, los recursos disponibles, los apoyos ya entregados y lo que sigue pendiente.</div></details>
      <div class="priority-grid" style="margin-bottom:12px">
       <div class="prio p1"><b>Prioridad 1</b><h4>Vida y seguridad</h4><p>Rescate, evacuación, atención médica, aislamiento de peligros y agua segura.</p></div>
       <div class="prio p2"><b>Prioridad 2</b><h4>Estabilización</h4><p>Alojamiento, alimentación, saneamiento, accesos y continuidad de servicios.</p></div>
       <div class="prio p3"><b>Prioridad 3</b><h4>Recuperación inicial</h4><p>Limpieza, rehabilitación, dictámenes y restablecimiento progresivo.</p></div>
      </div>
-     <div class="needs-table" id="needsTable"></div>
+     <div class="notice" style="margin-bottom:10px">Cada necesidad puede vincularse con el daño, la capacidad disponible, los apoyos desplegados y la brecha pendiente. Abre <b>“Vincular daño, capacidades, apoyos y pendiente”</b> en cada tarjeta.</div><div class="needs-table" id="needsTable"></div>
      <button class="btn soft sm" type="button" id="addNeed">＋ Agregar necesidad</button>
      <fieldset><legend>Respuesta en curso</legend>
       <div class="field"><label>Acciones ya realizadas</label><textarea name="acciones"></textarea></div>
@@ -3973,8 +3994,7 @@ function updateProgress(){
  const pct=Math.round(done/6*100);
  ["homeProgressFill","guideProgressFill"].forEach(id=>{const el=document.getElementById(id);if(el)el.style.width=pct+"%"});
  const pctText=document.getElementById("homeProgressText");if(pctText)pctText.textContent=pct+"%";
- const disc=document.getElementById("homeProgressDisc");if(disc)disc.style.setProperty("--pct",pct+"%");
- const gm=document.getElementById("guideProgressText");if(gm)gm.textContent=done+" de 6 módulos";
+ const disc=document.getElementById("homeProgressDisc");if(disc)disc.style.setProperty("--pct",pct+"%"); const gm=document.getElementById("guideProgressText");if(gm)gm.textContent=done+" de 6 módulos";
  const hd=document.getElementById("homeModulesDone");if(hd)hd.textContent=done+"/6";
  document.querySelectorAll(".module").forEach(m=>{
    const n=Number(m.dataset.module);
@@ -4087,6 +4107,7 @@ const MODULES={
 <figure class="module-visual visual-ribbon" data-visual="m2"><img src="assets/m2.jpg" width="1440" height="811" loading="lazy" decoding="async" alt="Infografía El EDAN es un proceso: evaluación inicial, complementaria y específica."></figure>
 <div class="timeline"><div class="time"><div class="time-label">INICIAL</div><div><h4>Primer panorama</h4><p>Prioriza vida, seguridad, accesos, servicios esenciales y necesidades urgentes.</p></div></div><div class="time"><div class="time-label">COMPLE-<br>MENTARIA</div><div><h4>Actualizar y verificar</h4><p>Corrige estimaciones, incorpora zonas no evaluadas y registra cambios.</p></div></div><div class="time"><div class="time-label">ESPECÍFICA</div><div><h4>Profundizar por sector</h4><p>Requiere especialistas cuando existen daños en estructuras, sistemas hidráulicos, salud u otros sectores técnicos.</p></div></div></div>
 <div class="lesson key"><h3>General y específica</h3><p>La evaluación <b>general</b> dimensiona el panorama y ayuda a priorizar; la <b>específica</b> profundiza en un sector o infraestructura que requiere conocimiento técnico. Ambas pueden coexistir.</p></div>
+<div class="lesson"><h3>Registro de cortes en el formulario</h3><p>En el paso 1 selecciona <b>preliminar/inicial</b>, <b>complementaria/actualización</b> o <b>específica/sectorial</b>. Si hay un corte previo, consigna su ID y explica qué cambió. La actualización no borra el historial de versiones que ya guarda la aplicación.</p></div>
 <div class="lesson"><h3>Hora de corte</h3><p>Un EDAN no describe “la emergencia” de forma permanente; describe la situación <b>a una hora determinada</b>. Cada actualización debe indicar qué cambió respecto al corte anterior.</p></div>
 <div class="lesson"><h3>Qué debe cambiar entre cortes</h3><p>El siguiente corte no consiste en copiar el anterior. Debe reflejar nuevas áreas evaluadas, cifras confirmadas, daños que aumentaron o disminuyeron, necesidades atendidas, recursos incorporados y pendientes todavía abiertos.</p><p>Por eso el EDAN funciona como una <b>secuencia de fotografías operativas</b> de la emergencia, no como un documento estático.</p></div>
 <div class="lesson interactive"><h3>Actividad · Ordena el proceso</h3><p>Ordena las etapas según la secuencia que consideres correcta. Arrastra las tarjetas o utiliza ↑ y ↓. No se muestran números para evitar pistas sobre la respuesta.</p>
@@ -4121,7 +4142,7 @@ const MODULES={
 <details open><summary>👥 Población y salud</summary><div class="body">Afectadas, fallecidas, lesionadas, no localizadas, aisladas, evacuadas, en refugio y personas que requieren seguimiento o atención médica.</div></details>
 <details><summary>🏠 Vivienda y alojamiento</summary><div class="body">Viviendas afectadas o inhabitables, pérdidas totales y necesidad de alojamiento seguro.</div></details>
 <details><summary>💧 Servicios esenciales</summary><div class="body">Agua, energía, saneamiento, telecomunicaciones, salud y accesibilidad.</div></details>
-<details><summary>🛣️ Infraestructura</summary><div class="body">Caminos, puentes, escuelas, instalaciones de salud, edificios públicos, obras hidráulicas y sistemas productivos relevantes.</div></details>
+<details><summary>🛣️ Infraestructura</summary><div class="body">Caminos, puentes, escuelas, instalaciones de salud, edificios públicos y obras hidráulicas. En infraestructura productiva distingue sector primario (agricultura, ganadería, pesca, acuicultura), secundario (industrias y centros de transformación) y terciario (comercio, transporte, turismo, servicios financieros y otros servicios). En el corte preliminar registra tipo, ubicación y nivel general de afectación, sin estimar pérdidas económicas.</div></details>
 <details><summary>⚠️ Riesgos secundarios</summary><div class="body">Corriente, estructuras inestables, deslizamientos, cableado, contaminación, fugas, incendios u otras condiciones que puedan agravar el impacto.</div></details></div>
 <div class="lesson key"><h3>Calidad y fuente del dato</h3><p><b>Confirmado</b> significa que fue verificado; <b>estimado</b> significa aproximación con fuente identificada; <b>sin dato</b> significa que todavía no se conoce. <b>0 no significa sin dato.</b> Siempre que sea posible, registra ubicación, hora y fuente.</p></div>
 <div class="lesson"><h3>Cómo describir una afectación</h3><p>Una observación útil combina cinco elementos: <b>qué está afectado, dónde, magnitud o cantidad, condición actual y consecuencia operativa</b>. Por ejemplo, “puente dañado” aporta menos que “puente de acceso a localidad X cerrado por socavación; no existe paso vehicular y se utiliza ruta alterna”.</p><p>Las fotografías y coordenadas complementan el dato, pero deben estar relacionadas con una observación y no sustituir su descripción.</p></div>
@@ -4151,6 +4172,7 @@ const MODULES={
 <figure class="module-visual visual-framed" data-visual="m5_priority"><img src="assets/m5_priority.jpg" width="1440" height="811" loading="lazy" decoding="async" alt="Infografía Priorización de necesidades en el EDAN: Prioridad 1, 2 y 3."></figure>
 <div class="lesson key"><h3>Necesidad y brecha de capacidad</h3><p>Una necesidad no depende solo del daño. Debe compararse con la <b>capacidad disponible</b>. Si la comunidad ya dispone de recursos suficientes, la brecha es menor; si los recursos no alcanzan, la prioridad puede aumentar.</p><p><b>Daño + consecuencia + capacidad disponible = necesidad priorizada.</b></p></div>
 <div class="lesson"><h3>Ejemplo</h3><p>Dos localidades tienen 30 viviendas afectadas. En una hay acceso, agua segura y refugio disponible; la otra está aislada y tiene personas con necesidad médica. El número de viviendas es similar, pero la prioridad operativa no es la misma.</p></div>
+<div class="lesson"><h3>Seguimiento de cada necesidad</h3><p>En el paso 5, relaciona cada necesidad con <b>el daño que la origina</b>, la <b>capacidad y recursos disponibles</b>, los <b>apoyos ya desplegados</b> y la <b>brecha pendiente</b>. Así podrás distinguir lo atendido de lo que aún requiere gestión o escalamiento.</p></div>
 <div class="lesson"><h3>Cómo expresar una necesidad</h3><p>Evita registrar solamente “se necesita ayuda”. Una necesidad debe ser lo más concreta posible: <b>qué se requiere, para quién o para qué, dónde, cantidad o referencia y urgencia</b>. Ejemplo: “abastecimiento de agua segura para aproximadamente 80 personas de la localidad X durante las próximas 24 horas”.</p><p>También debe señalarse si la capacidad local puede cubrirla totalmente, parcialmente o si requiere apoyo adicional.</p></div>
 <figure class="module-visual visual-case" data-visual="m5_case"><img src="assets/m5_case.jpg" width="1440" height="811" loading="lazy" decoding="async" alt="Infografía Del daño a la prioridad: daño, consecuencia, capacidad disponible y necesidad priorizada."></figure>
 <div class="lesson interactive"><h3>Actividad · Arrastra a la prioridad</h3><p>Coloca cada situación en Prioridad 1, 2 o 3.</p>
@@ -4674,12 +4696,12 @@ document.getElementById("edanForm").addEventListener("input",()=>{setStatus("Cam
 
 function renderNeeds(){
  if(!edan.needs?.length)edan.needs=[{id:uid("N"),desc:"",qty:"",priority:"1"}];
- document.getElementById("needsTable").innerHTML=edan.needs.map((n,i)=>`<div class="need-row" data-need="${n.id}"><span class="need-priority-badge p${esc(n.priority||"2")}">${priorityLabel(n.priority)}</span><div class="field"><label>Necesidad / acción requerida</label><input class="need-desc" type="text" value="${esc(n.desc)}" placeholder="Ej. Agua segura para 80 personas"></div><div class="field"><label>Cantidad / referencia</label><input class="need-qty" type="text" value="${esc(n.qty)}" placeholder="80 personas / 48 h"></div><div class="field"><label>Prioridad</label><select class="need-prio"><option value="1" ${n.priority=="1"?"selected":""}>1 · Vida y seguridad</option><option value="2" ${n.priority=="2"?"selected":""}>2 · Estabilización</option><option value="3" ${n.priority=="3"?"selected":""}>3 · Recuperación inicial</option></select></div><button type="button" class="btn danger sm need-del">×</button></div>`).join("");
+ document.getElementById("needsTable").innerHTML=edan.needs.map((n,i)=>`<div class="need-row" data-need="${esc(n.id)}"><span class="need-priority-badge p${esc(n.priority||"2")}">${priorityLabel(n.priority)}</span><div class="field"><label>Necesidad / acción requerida</label><input class="need-desc" type="text" value="${esc(n.desc||"")}" placeholder="Ej. Agua segura para 80 personas"></div><div class="field"><label>Cantidad / referencia</label><input class="need-qty" type="text" value="${esc(n.qty||"")}" placeholder="80 personas / 48 h"></div><div class="field"><label>Prioridad</label><select class="need-prio"><option value="1" ${n.priority=="1"?"selected":""}>1 · Vida y seguridad</option><option value="2" ${n.priority=="2"?"selected":""}>2 · Estabilización</option><option value="3" ${n.priority=="3"?"selected":""}>3 · Recuperación inicial</option></select></div><button type="button" class="btn danger sm need-del" aria-label="Eliminar necesidad">×</button><details class="need-link"><summary>Vincular daño, capacidades, apoyos y pendiente</summary><div class="need-link-grid"><div class="field"><label>Daño / afectación que origina la necesidad</label><input class="need-affect" type="text" value="${esc(n.affect||"")}" placeholder="Ej. Red de agua fuera de servicio"></div><div class="field"><label>Capacidad y recursos disponibles</label><input class="need-capacity" type="text" value="${esc(n.capacity||"")}" placeholder="Ej. Una pipa disponible / capacidad insuficiente"></div><div class="field"><label>Apoyos ya desplegados o atendidos</label><input class="need-support" type="text" value="${esc(n.support||"")}" placeholder="Ej. Entregadas 30 dotaciones"></div><div class="field"><label>Necesidad pendiente / brecha por cubrir</label><input class="need-pending" type="text" value="${esc(n.pending||"")}" placeholder="Ej. Faltan 50 dotaciones y transporte"></div></div></details></div>`).join("");
  document.querySelectorAll(".need-del").forEach(b=>b.addEventListener("click",()=>{const id=b.closest(".need-row").dataset.need;edan.needs=edan.needs.filter(n=>n.id!==id);renderNeeds();persistCurrentDraft();updateEDANVisuals()}));
  document.querySelectorAll(".need-prio").forEach(s=>s.addEventListener("change",()=>{collectNeeds();updatePriorityBadges();persistCurrentDraft();updateEDANVisuals()}));
  updatePriorityBadges();
 }
-function collectNeeds(){const rows=[...document.querySelectorAll(".need-row")];if(rows.length)edan.needs=rows.map(r=>({id:r.dataset.need,desc:r.querySelector(".need-desc").value,qty:r.querySelector(".need-qty").value,priority:r.querySelector(".need-prio").value}))}
+function collectNeeds(){const rows=[...document.querySelectorAll(".need-row")];if(rows.length)edan.needs=rows.map(r=>({id:r.dataset.need,desc:r.querySelector(".need-desc").value,qty:r.querySelector(".need-qty").value,priority:r.querySelector(".need-prio").value,affect:r.querySelector(".need-affect").value,capacity:r.querySelector(".need-capacity").value,support:r.querySelector(".need-support").value,pending:r.querySelector(".need-pending").value}))}
 document.getElementById("addNeed").addEventListener("click",()=>{collectNeeds();edan.needs.push({id:uid("N"),desc:"",qty:"",priority:"2"});renderNeeds();persistCurrentDraft()});
 function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 
@@ -4728,18 +4750,19 @@ function hasMeaningfulEdanData(obj){
  const f=obj.fields||{};
  const textKeys=[
   "evento","localidad","equipo","responsable","coordenadas","descripcion",
-  "p_necesidades","v_obs","i_vial","i_publica","i_hidraulica","i_otros",
+  "p_necesidades","v_obs","i_vial","i_publica","i_hidraulica","i_otros","corte_anterior","corte_cambios",
   "riesgos_activos","acciones","recursos","evidencias_obs","pendientes",
   "prioridades_siguiente","observaciones_finales"
  ];
  if(textKeys.some(k=>String(f[k]??"").trim()!==""))return true;
+ if(Object.keys(f).some(k=>k.startsWith("prod_")&&(k.endsWith("_ubicacion")&&String(f[k]||"").trim()||k.endsWith("_nivel")&&!['Sin evaluar',''].includes(String(f[k]||"")))))return true;
  const numberKeys=[
   "p_afectadas","p_fallecidas","p_lesionadas","p_desaparecidas","p_aisladas",
   "p_evacuadas","p_refugio","p_medica","familias","v_afectadas","v_inhabitables",
   "v_total","refugios_activos","alojamiento_alterno"
  ];
  if(numberKeys.some(k=>Number(f[k]||0)>0))return true;
- if((obj.needs||[]).some(n=>String(n.desc||"").trim()!==""||String(n.qty||"").trim()!==""))return true;
+ if((obj.needs||[]).some(n=>["desc","qty","affect","capacity","support","pending"].some(k=>String(n[k]||"").trim()!=="")))return true;
  if((obj.attachments||[]).length>0)return true;
  return false;
 }
@@ -4971,7 +4994,6 @@ async function verifyStorageHealth(showMessage=false){
  if(showMessage)toast(localOK&&idbOK?"Almacenamiento local verificado correctamente.":"Se detectó un problema de almacenamiento.");
  return localOK&&idbOK
 }
-
 function getTrash(){return loadJSON(TRASH_KEY,[])}
 function saveTrash(v){return saveJSON(TRASH_KEY,v)}
 function getBackupMeta(){return loadJSON(BACKUP_META_KEY,{last:null})}
@@ -5211,7 +5233,7 @@ function renderSaved(){
 }
 
 function updateReportPreview(){
- collectForm();const f=edan.fields,a=readinessAssessment();document.getElementById("reportPreview").innerHTML=`<h3>Resumen del reporte</h3><ul><li><b>${esc(f.evento||"Evento sin nombre")}</b> · ${esc(f.municipio||"")} / ${esc(f.localidad||"")}</li><li>Población afectada: ${num(f.p_afectadas)} · Aislada: ${num(f.p_aisladas)} · Evacuada: ${num(f.p_evacuadas)}</li><li>Viviendas afectadas: ${num(f.v_afectadas)} · Inhabitables: ${num(f.v_inhabitables)}</li><li>${edan.needs.filter(n=>n.desc).length} necesidad(es) registradas · ${edan.attachments.length} anexo(s)</li><li>Calidad del dato: ${esc(f.calidad_dato||"Sin definir")}</li><li>Validación: ${esc(f.val_nombre||"Pendiente")} · ${esc(f.val_dependencia||"Dependencia pendiente")}</li><li>Estado de cierre: <b>${esc(a.title)}</b></li></ul><span>El PDF incluirá los datos capturados, necesidades, fotografías y el QR de validación cuando se complete la identidad.</span>`;updateEDANVisuals()
+ collectForm();const f=edan.fields,a=readinessAssessment();document.getElementById("reportPreview").innerHTML=`<h3>Resumen del reporte</h3><ul><li><b>${esc(f.evento||"Evento sin nombre")}</b> · ${esc(f.municipio||"")} / ${esc(f.localidad||"")}</li><li>Población afectada: ${num(f.p_afectadas)} · Aislada: ${num(f.p_aisladas)} · Evacuada: ${num(f.p_evacuadas)}</li><li>Viviendas afectadas: ${num(f.v_afectadas)} · Inhabitables: ${num(f.v_inhabitables)}</li><li>${edan.needs.filter(n=>n.desc).length} necesidad(es) registradas · ${edan.attachments.length} anexo(s)</li><li>Etapa: ${esc(f.tipo_corte||"Preliminar / inicial")}</li><li>Calidad del dato: ${esc(f.calidad_dato||"Sin definir")}</li><li>Validación: ${esc(f.val_nombre||"Pendiente")} · ${esc(f.val_dependencia||"Dependencia pendiente")}</li><li>Estado de cierre: <b>${esc(a.title)}</b></li></ul><span>El PDF incluirá los datos capturados, necesidades, fotografías y el QR de validación cuando se complete la identidad.</span>`;updateEDANVisuals()
 }
 function num(v){return Number(v||0)}
 
@@ -5292,7 +5314,7 @@ function validationCanonical(rec){
  return JSON.stringify({
   id:rec.id,
   fields:f,
-  needs:(rec.needs||[]).map(n=>({desc:n.desc||"",qty:n.qty||"",priority:n.priority||""})),
+  needs:(rec.needs||[]).map(n=>({desc:n.desc||"",qty:n.qty||"",priority:n.priority||"",affect:n.affect||"",capacity:n.capacity||"",support:n.support||"",pending:n.pending||""})),
   attachments:(rec.attachments||[]).map(a=>({id:a.id,name:a.name,type:a.type,size:a.size}))
  });
 }
@@ -5521,6 +5543,9 @@ async function buildPDF(rec){
 
  section("1. IDENTIFICACIÓN");
  pair("Evento",f.evento);pair("Fenómeno",f.fenomeno);pair("Fecha / hora de corte",f.fecha);
+ pair("Etapa de evaluación",f.tipo_corte||"Preliminar / inicial (formato anterior)");
+ if(f.corte_anterior)pair("Corte anterior",f.corte_anterior);
+ if(f.corte_cambios)pair("Cambios respecto al corte anterior",f.corte_cambios);
  pair("Municipio",f.municipio);pair("Localidad / sector",f.localidad);pair("Equipo evaluador",f.equipo);
  pair("Responsable",f.responsable);pair("Acceso",f.acceso);pair("Coordenadas",f.coordenadas);pair("Descripción",f.descripcion);
 
@@ -5539,12 +5564,23 @@ async function buildPDF(rec){
  pair("Agua potable",f.s_agua);pair("Energía eléctrica",f.s_energia);pair("Saneamiento",f.s_saneamiento);
  pair("Telecomunicaciones",f.s_comunicaciones);pair("Salud",f.s_salud);pair("Accesos / transporte",f.s_accesos);
  pair("Vial",f.i_vial);pair("Infraestructura pública",f.i_publica);pair("Hidráulica / drenaje",f.i_hidraulica);
- pair("Productiva / otros",f.i_otros);pair("Riesgos activos",f.riesgos_activos);
+ pair("Productiva / otros (observaciones)",f.i_otros);
+ const productiveSectors=[["Primario", [["agricultura", "Agricultura"], ["ganaderia", "Ganadería"], ["pesca", "Pesca"], ["acuicultura", "Acuicultura"]]], ["Secundario", [["industrias", "Industrias"], ["transformacion", "Centros de transformación"]]], ["Terciario", [["comercio", "Comercio"], ["transporte", "Transporte"], ["turismo", "Turismo"], ["financieros", "Servicios financieros"], ["servicios", "Otros servicios"]]]];
+ const prodRows=[];
+ for(const [sector,items] of productiveSectors){for(const [key,label] of items){const nivel=String(f["prod_"+key+"_nivel"]||"Sin evaluar");const ubicacion=String(f["prod_"+key+"_ubicacion"]||"").trim();if(nivel!=="Sin evaluar"||ubicacion)prodRows.push(`${sector} · ${label}: ${nivel}${ubicacion?" · "+ubicacion:""}`)}}
+ if(prodRows.length){section("4A. INFRAESTRUCTURA PRODUCTIVA · EVALUACIÓN GENERAL");prodRows.forEach(t=>line(t,8.5));line("Registro preliminar de tipo, ubicación y nivel general; la cuantificación especializada corresponde a las instancias competentes.",7.5,false,[100,92,70]);}
+ pair("Riesgos activos",f.riesgos_activos);
 
  section("5. ANÁLISIS DE NECESIDADES");
  const needs=(rec.needs||[]).filter(n=>n.desc);
  if(!needs.length)line("Sin necesidades registradas.",9);
- else needs.forEach((n,i)=>line(`${i+1}. Prioridad ${n.priority} · ${n.desc}${n.qty?" · "+n.qty:""}`,9));
+ else needs.forEach((n,i)=>{
+  line(`${i+1}. Prioridad ${n.priority} · ${n.desc}${n.qty?" · "+n.qty:""}`,9);
+  if(n.affect)pair("Afectación relacionada",n.affect);
+  if(n.capacity)pair("Capacidad disponible",n.capacity);
+  if(n.support)pair("Apoyos desplegados",n.support);
+  if(n.pending)pair("Pendiente / brecha",n.pending);
+ });
  pair("Acciones realizadas",f.acciones);pair("Recursos desplegados",f.recursos);
 
  section("6. VALIDACIÓN OPERATIVA");
