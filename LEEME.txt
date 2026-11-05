@@ -101,3 +101,11 @@ V51 · Acceso Modo de Capacitación restaurado:
 - Ubicación: Entrar a la Guía → Marco normativo y metodología EDAN → Modo de Capacitación → Hacer EDAN.
 - El botón reutiliza la ruta de capacitación existente (screen-guide); no duplica módulos ni progreso.
 - No se modifica captura EDAN, almacenamiento, respaldo, historial, papelera, IndexedDB, PDF, QR, marco normativo ni Analytics.
+
+
+V52 · OBSERVACIONES ATENDIDAS (2026-11-05)
+- Se diferencian evaluaciones preliminares, complementarias y específicas, con referencia al corte anterior y cambios.
+- Se amplía la infraestructura productiva por actividades primarias, secundarias y terciarias; se registra tipo, ubicación y nivel general de afectación.
+- Se relacionan necesidades con daños, capacidades disponibles, apoyos desplegados y pendientes.
+- Se mantienen 7 pasos EDAN, 6 módulos de capacitación, expedientes, guardado local, respaldo, PDF y QR.
+- Caché PWA: edan-tabasco-v52.
