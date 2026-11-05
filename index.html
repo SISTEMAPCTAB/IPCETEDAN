@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7d1735">
 <meta name="description" content="Guía Digital EDAN Tabasco. Capacitación y elaboración local de Evaluación de Daños y Análisis de Necesidades.">
-<meta name="application-version" content="52-observaciones-edan">
+<meta name="application-version" content="53-portada-equilibrada">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#7d1735">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2921,6 +2921,39 @@ textarea{width:100%}
 .need-link-grid .field{min-width:0}
 @media(max-width:700px){.productive-row{grid-template-columns:1fr 1fr}.productive-row>b{grid-column:1/-1}.need-link-grid{grid-template-columns:1fr}}
 @media(max-width:390px){.productive-row{grid-template-columns:1fr}.productive-row>b{grid-column:auto}}
+
+
+
+/* V53: portada compacta y sin huecos, solo CSS */
+@media(min-width:1100px){
+ #screen-home > .hero .hero-main{grid-template-columns:minmax(0,.87fr) minmax(0,1.13fr);gap:22px;padding:20px 24px 18px}
+ #screen-home .hero-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ #screen-home .hero-actions .action-card{grid-template-columns:38px minmax(0,1fr) 12px;gap:9px;min-height:110px;padding:12px 11px;border-radius:15px}
+ #screen-home .hero-actions .action-card .icon{width:38px;height:38px;font-size:21px;border-radius:12px}
+ #screen-home .hero-actions .action-card b{font-size:15px;line-height:1.2}
+ #screen-home .hero-actions-panel{padding:13px}
+ #screen-home .hero-benefits{gap:7px}
+}
+#screen-home .home-grid{align-items:start}
+#screen-home .progress-card{min-height:0}
+#screen-home .progress-actions{margin-top:18px}
+@media(min-width:1350px){
+ #screen-home .primary-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #screen-home .primary-home-card{min-height:222px;padding:15px}
+ #screen-home .primary-home-card p{max-width:100%}
+}
+@media(min-width:761px) and (max-width:1349px){
+ #screen-home .primary-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #screen-home .primary-actions > .primary-home-card:last-child{grid-column:1/-1}
+ #screen-home .primary-home-card{min-height:185px}
+}
+@media(max-width:1099px){#screen-home > .hero .hero-main{grid-template-columns:1fr}}
+@media(max-width:760px){
+ #screen-home .primary-actions{grid-template-columns:1fr}
+ #screen-home .primary-actions > .primary-home-card:last-child{grid-column:auto}
+ #screen-home .primary-home-card{min-height:0}
+ #screen-home .home-grid{align-items:stretch}
+}
 
 </style>
 </head>
